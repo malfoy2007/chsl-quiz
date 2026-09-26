@@ -1,0 +1,276 @@
+// SSC CGL Quiz - Question Bank (Day 1: Geography - Parmar SSC PYQ Lecture 7)
+// Format: {q, opts, ans (index), exp}
+// To add a new day's PDF questions: replace this array. Set TOTAL_MINUTES in index.html.
+
+const QUESTIONS = [
+{q:"Which layer of the Earth is responsible for the movement of tectonic plates through convection currents?",
+ opts:["Crust","Mantle","Outer Core","Inner Core"],ans:1,
+ exp:"Convection currents in the mantle drive plate movement (Arthur Holmes' convection current theory)."},
+
+{q:"The SIAL layer of the Earth's crust is made up of:",
+ opts:["Silicon and Magnesium","Silicon and Aluminium","Nickel and Iron","Oxygen and Hydrogen"],ans:1,
+ exp:"SIAL = SI (Silicon) + AL (Aluminium)."},
+
+{q:"The SIMA layer is composed of:",
+ opts:["Silicon and Aluminium","Sodium and Magnesium","Silicon and Magnesium","Sulphur and Iron"],ans:2,
+ exp:"SIMA = SI (Silicon) + MA (Magnesium)."},
+
+{q:"The approximate thickness of the Earth's mantle is:",
+ opts:["2900 km","1300 km","2200 km","6370 km"],ans:0,
+ exp:"The mantle extends roughly 2900 km, divided into upper and lower mantle."},
+
+{q:"Which is the correct order of Earth's layers from the surface towards the centre?",
+ opts:["Crust → Outer Core → Mantle → Inner Core","Crust → Mantle → Outer Core → Inner Core","Mantle → Crust → Inner Core → Outer Core","Crust → Inner Core → Mantle → Outer Core"],ans:1,
+ exp:"Crust → Mantle (2900 km) → Outer Core (liquid) → Inner Core (solid)."},
+
+{q:"The inner core of the Earth is in which state?",
+ opts:["Liquid","Gaseous","Solid","Semi-liquid"],ans:2,
+ exp:"Despite extreme heat, immense pressure keeps the inner core solid (NiFe)."},
+
+{q:"The outer core of the Earth:",
+ opts:["Is solid and shows no magnetic property","Is liquid and exhibits magnetic properties","Is gaseous","Is identical to the crust"],ans:1,
+ exp:"The liquid outer core (~1300 km) of nickel-iron generates Earth's magnetism."},
+
+{q:"The asthenosphere is best described as:",
+ opts:["The rigid outermost layer of the Earth","A semi-solid, weak and ductile part of the upper mantle","The solid inner core","The lowest part of the crust"],ans:1,
+ exp:"Asthenosphere lies below the lithosphere and is the source of magma/lava."},
+
+{q:"The lithosphere consists of:",
+ opts:["Only the oceanic crust","The crust and the upper solid mantle (10–200 km thickness)","Only the continental crust","The entire mantle"],ans:1,
+ exp:"Lithosphere = crust + upper solid mantle; it is broken into plates."},
+
+{q:"The Convection Current Theory was propounded by:",
+ opts:["Alfred Wegener","Arthur Holmes","McKenzie and Parker","Harry Hess"],ans:1,
+ exp:"Arthur Holmes proposed that convection currents in the mantle move plates like heated air circulates in a room."},
+
+{q:"The Himalayas were formed by the collision of which two plates?",
+ opts:["Indian and Eurasian","Indian and African","Eurasian and Australian","Pacific and Eurasian"],ans:0,
+ exp:"The north-moving Indian plate collided with the Eurasian plate ~5 crore years ago, raising the Himalayas and the Tibetan Plateau."},
+
+{q:"Laurasia was:",
+ opts:["The southern supercontinent","The ancient ocean surrounding Pangaea","The northern supercontinent","A giant mountain range"],ans:2,
+ exp:"Laurasia was the northern supercontinent, formed from the breakup of Pangaea; Gondwana was the southern one."},
+
+{q:"Panthalassa was:",
+ opts:["A northern supercontinent","A southern supercontinent","The ancient ocean that surrounded Pangaea","A deep ocean trench"],ans:2,
+ exp:"Panthalassa was the vast primeval ocean encircling the supercontinent Pangaea."},
+
+{q:"The Continental Drift Theory was given by Alfred Wegener in:",
+ opts:["1912","1859","1967","1945"],ans:0,
+ exp:"Wegener proposed in 1912 that all continents were once joined as Pangaea."},
+
+{q:"According to the Plate Tectonic Theory (McKenzie & Parker, 1967), the Earth's lithosphere is divided into:",
+ opts:["Two giant plates","Seven major plates and several minor plates","Fifty rigid plates","A single unbroken shell"],ans:1,
+ exp:"The lithosphere is split into 7 major plates and some minor ones that move over the asthenosphere."},
+
+{q:"Match the following: 1. Mid-oceanic ridge 2. Mariana Trench 3. San Andreas Fault with plate boundaries (Divergent / Convergent / Transform):",
+ opts:["1-Divergent, 2-Convergent, 3-Transform","1-Convergent, 2-Divergent, 3-Transform","1-Transform, 2-Convergent, 3-Divergent","1-Divergent, 2-Transform, 3-Convergent"],ans:0,
+ exp:"Mid-oceanic ridge = divergent; Mariana Trench = convergent (subduction); San Andreas = transform."},
+
+{q:"The Mariana Trench is located:",
+ opts:["In the Atlantic Ocean","In the western Pacific Ocean, east of the Mariana Islands","In the Indian Ocean","In the Arctic Ocean"],ans:1,
+ exp:"It is the deepest oceanic trench on Earth (~10,984 m)."},
+
+{q:"The deepest point of the Mariana Trench, about 10,984 m deep, is called:",
+ opts:["Challenger Deep","Java Deep","Tonga Deep","Romanche Deep"],ans:0,
+ exp:"Challenger Deep is the deepest known point of Earth's oceans."},
+
+{q:"The Pacific Ring of Fire is shaped like:",
+ opts:["A circle","A horseshoe","A straight line","A spiral"],ans:1,
+ exp:"It is a horseshoe-shaped belt around the Pacific with intense earthquakes and volcanoes."},
+
+{q:"Consider the following statements about hanging valleys: 1. Hanging valleys are often found opening into the main glacial valleys at higher elevations. 2. The mountain shoulders (spurs) of such hanging valleys are often truncated into triangular facets. Which of the above is/are correct?",
+ opts:["Only 1","Only 2","Both 1 and 2","Neither 1 nor 2"],ans:2,
+ exp:"Both statements correctly describe hanging valleys and truncated spurs formed by glacial erosion."},
+
+{q:"A 'Cirque' in glacial topography is:",
+ opts:["A bowl-shaped depression at the head of a glacial valley","A ridge of deposited moraine","A sea inlet","A sand dune"],ans:0,
+ exp:"Cirques are armchair/bowl-shaped hollows carved at the head of glacial valleys."},
+
+{q:"An 'Arête' is:",
+ opts:["A pointed pyramidal peak","A narrow, sharp-edged ridge between two glacial valleys","A glacial lake","A depositional mound"],ans:1,
+ exp:"Arêtes form where two cirques cut back on opposite sides of a ridge."},
+
+{q:"A 'Horn' is formed when:",
+ opts:["One cirque enlarges","Several cirques erode backwards around a single peak","A glacier deposits moraine","A river cuts a V-shaped valley"],ans:1,
+ exp:"Multiple cirques cutting back leave a sharp, pointed horn-like peak (e.g., Matterhorn)."},
+
+{q:"A U-shaped valley is a landform of:",
+ opts:["River erosion","Wind deposition","Glacial erosion","Wave deposition"],ans:2,
+ exp:"Glaciers carve wide, deep U-shaped valleys, unlike rivers which form V-shaped ones."},
+
+{q:"Moraines are:",
+ opts:["Erosional features of rivers","Deposits of rock debris carried and dumped by glaciers","Volcanic cones","Coastal dunes"],ans:1,
+ exp:"Moraines are accumulations of soil and rock debris transported by glaciers."},
+
+{q:"Drumlins are:",
+ opts:["Long narrow ridges of sand","Oval-shaped hills formed from glacial deposition","Deep cracks in glaciers","Waterfalls in hanging valleys"],ans:1,
+ exp:"Drumlins are smooth, elongated oval hills of till deposited under a glacier."},
+
+{q:"A fjord is formed when:",
+ opts:["A river floods its bank","Sea water enters a glacially carved valley","Wind erodes a coastline","A volcano collapses"],ans:1,
+ exp:"Fjords are deep, narrow sea inlets formed when the sea floods a U-shaped glacial valley."},
+
+{q:"Argon in the Earth's crust is produced through the decay of:",
+ opts:["Carbon-14","Uranium-235","Potassium-40 (K-40)","Radium-226"],ans:2,
+ exp:"K-40 undergoes beta decay to form Argon-40, used in K-Ar dating."},
+
+{q:"In alpha decay of a radioactive element, the mass number and atomic number change by:",
+ opts:["Mass number decreases by 4, atomic number by 2","Mass number decreases by 2, atomic number by 4","Both remain unchanged","Mass number increases by 4, atomic number by 2"],ans:0,
+ exp:"Alpha particle = 2 protons + 2 neutrons (Helium nucleus); A −4, Z −2."},
+
+{q:"In beta (β−) decay:",
+ opts:["Mass number changes by 1, atomic number unchanged","Atomic number increases by 1, mass number unchanged","Both mass and atomic number decrease by 2","Only gamma rays are emitted"],ans:1,
+ exp:"A neutron converts to a proton emitting an electron; Z +1, A same."},
+
+{q:"Due to increasing urban light pollution, which astronomical observation is most severely affected?",
+ opts:["Sunspots","Transit of planets","Deep-sky objects (faint distant objects)","Lunar phases"],ans:2,
+ exp:"Sky glow from artificial light drowns out faint deep-sky objects like galaxies and nebulae."},
+
+{q:"The constellation 'Ursa Major' is known in India as:",
+ opts:["Sharmishtha","Saptarishi (Great Bear)","Dhanush","Mriga"],ans:1,
+ exp:"Ursa Major = Great Bear = Saptarishi Mandal, visible in the northern sky."},
+
+{q:"The constellation Cassiopeia is shaped like the letter:",
+ opts:["L","W","M","S"],ans:1,
+ exp:"Cassiopeia is a W-shaped constellation; its brightest star is Schedar."},
+
+{q:"The brightest star in the Orion constellation is:",
+ opts:["Sirius","Rigel","Polaris","Vega"],ans:1,
+ exp:"Orion (the Hunter) is prominent in northern winter skies; Rigel is its brightest star."},
+
+{q:"The constellation shaped like a bow and arrow (Dhanush/Dhanu) is:",
+ opts:["Orion","Cygnus","Sagittarius","Cassiopeia"],ans:2,
+ exp:"Sagittarius resembles a bow-and-arrow or teapot shape."},
+
+{q:"BIMSTEC stands for:",
+ opts:["Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation","Bengal Intergovernmental Maritime Security Treaty and Economic Council","Bangladesh India Myanmar Sri Lanka Trade and Economic Commission","Bay of Bengal Industrial and Marine Science Technology Exchange Council"],ans:0,
+ exp:"BIMSTEC = Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation."},
+
+{q:"BIMSTEC was established on:",
+ opts:["6 June 1997","8 December 1985","15 August 1947","26 January 1950"],ans:0,
+ exp:"Established via the Bangkok Declaration of 6 June 1997; HQ at Dhaka, Bangladesh."},
+
+{q:"The headquarters of BIMSTEC is located in:",
+ opts:["New Delhi","Colombo","Dhaka","Bangkok"],ans:2,
+ exp:"BIMSTEC HQ = Dhaka, Bangladesh (SAARC HQ = Kathmandu)."},
+
+{q:"How many member countries does BIMSTEC have?",
+ opts:["5","6","7","8"],ans:2,
+ exp:"7 members: India, Bangladesh, Nepal, Bhutan, Sri Lanka, Myanmar, Thailand."},
+
+{q:"The QUAD (Quadrilateral Security Dialogue) comprises:",
+ opts:["India, USA, Japan, Australia","India, USA, UK, France","India, Japan, Germany, Australia","USA, China, Russia, India"],ans:0,
+ exp:"QUAD members: India, USA, Japan, Australia. Largest economy among them: USA."},
+
+{q:"Which type of cloud is mainly associated with thunderstorms, lightning, thunder and heavy rainfall?",
+ opts:["Cumulonimbus","Cirrus","Stratus","Altostratus"],ans:0,
+ exp:"Cumulonimbus (Kapaasi-varshi) clouds are towering storm clouds producing heavy rain."},
+
+{q:"Which of the following is the primary characteristic of tropical deciduous (monsoon) forests?",
+ opts:["Very dense forests with high rainfall","Found in regions with 100–200 cm of rainfall","Found in areas of minimum rainfall","Found only in heavy monsoon coastal regions"],ans:1,
+ exp:"Tropical deciduous forests occur where rainfall is 100–200 cm; they shed leaves in dry season."},
+
+{q:"Consider the following statements about Shola forests: 1. They are found in dry and semi-arid climate regions. 2. They are tropical montane forests found above 2000 m elevation. 3. They occur in the Nilgiri and Palani hill regions of South India. Which is/are correct?",
+ opts:["Only 2 and 3","Only 1","Only 1 and 3","All of the above"],ans:0,
+ exp:"Sholas are stunted tropical montane forests (above ~2000 m) found only in South India (Karnataka, Kerala, Tamil Nadu)."},
+
+{q:"The 'Prairies' grasslands are located in:",
+ opts:["South America","North America","Africa","Australia"],ans:1,
+ exp:"Prairies = North America (known as the world's granary)."},
+
+{q:"The 'Steppes' grasslands are found in:",
+ opts:["Africa","Asia and Europe","South America","Australia"],ans:1,
+ exp:"Steppes are temperate grasslands of Asia and Europe."},
+
+{q:"The 'Velds' grasslands are located in:",
+ opts:["Argentina","South Africa","Hungary","New Zealand"],ans:1,
+ exp:"Velds = South Africa; Pampas = Argentina; Puszta = Hungary; Downs = Australia; Canterbury = New Zealand."},
+
+{q:"The Pampas grassland is famous for growing which nutritious forage crop?",
+ opts:["Wheat","Alfalfa","Sugarcane","Cotton"],ans:1,
+ exp:"Pampas (Argentina) is known for Alfalfa, a highly nutritious grass."},
+
+{q:"Westerlies (Pachhua winds) blow between which latitudes?",
+ opts:["0° and 10°","30° and 60° in both hemispheres","60° and 90°","Only near the equator"],ans:1,
+ exp:"Westerlies blow from west to east between 30° and 60° latitude, deflected eastward by Coriolis force."},
+
+{q:"Trade winds in the Northern Hemisphere blow from the:",
+ opts:["South-west","North-east towards the equator","North-west","Due south"],ans:1,
+ exp:"Trade winds originate around 30° latitude and blow equatorward: NE trades in N hemisphere, SE trades in S hemisphere."},
+
+{q:"The Coriolis force is:",
+ opts:["Maximum at the equator and zero at the poles","Zero at the equator and maximum at the poles","Equal everywhere","Zero everywhere"],ans:1,
+ exp:"Coriolis effect increases with latitude; winds deflect right in N hemisphere, left in S hemisphere."},
+
+{q:"The 'Horse Latitudes' are zones of calm, high pressure located around:",
+ opts:["The equator","30° N and 30° S","60° N and 60° S","The poles"],ans:1,
+ exp:"Around 30° N/S lie high-pressure belts with weak winds and dry climates."},
+
+{q:"The phenomenon of seasons on Earth is primarily caused by:",
+ opts:["The Earth's distance from the Sun","The tilt of the Earth's axis (23.5°) combined with revolution","The rotation of the Earth on its axis","The shape of the Earth's orbit"],ans:1,
+ exp:"The 23.5° axial tilt relative to the orbital plane causes seasonal variation; revolution distributes it."},
+
+{q:"The Summer Solstice in the Northern Hemisphere occurs on:",
+ opts:["21 March","21 June","23 September","22 December"],ans:1,
+ exp:"On 21 June the Sun is directly overhead the Tropic of Cancer — longest day in N hemisphere."},
+
+{q:"On equinoxes (21 March and 23 September):",
+ opts:["Days are longest in the Northern Hemisphere","Day and night are equal worldwide","Nights are longest worldwide","The Sun is overhead the Tropic of Capricorn"],ans:1,
+ exp:"During equinoxes the Sun is directly above the equator; day and night are nearly equal everywhere."},
+
+{q:"The primary cause of ocean tides on Earth is:",
+ opts:["Wind patterns","The gravitational pull of the Moon and the Sun","The Coriolis force","Seafloor topography"],ans:1,
+ exp:"Tides are caused chiefly by the Moon's gravitational pull (with the Sun's contribution) on ocean water."},
+
+{q:"Spring tides (highest high tides) occur during:",
+ opts:["First and third quarters of the Moon","New moon and full moon","Only during solar eclipses","Every Sunday"],ans:1,
+ exp:"When Sun, Moon and Earth align (new/full moon), their pulls combine to produce spring tides."},
+
+{q:"The 'Maittri Setu' bridge built on the Feni river connects Tripura (India) with:",
+ opts:["Myanmar","Nepal","Bhutan","Bangladesh"],ans:3,
+ exp:"Maittri Setu (~1.9 km) over the Feni river links Tripura with Bangladesh (opened ~2020)."},
+
+{q:"The primary factor responsible for variations in solar radiation (insolation) received at different places on Earth is:",
+ opts:["Presence of water bodies","The Earth's rotation","The angle at which the Sun's rays strike the Earth (inclination)","Transparency of the atmosphere"],ans:2,
+ exp:"The tilt of Earth's axis makes sunrays oblique at higher latitudes, reducing insolation."},
+
+{q:"Albedo refers to:",
+ opts:["The amount of heat absorbed by a surface","The reflectivity of a surface","The humidity of air","The pressure of the atmosphere"],ans:1,
+ exp:"Fresh snow has high albedo; asphalt has very low albedo; oceans reflect less than forests."},
+
+{q:"Consider the following statements: 1. A black hole directly emits X-rays from its event horizon. 2. Pulsars are rapidly rotating neutron stars. Which is/are correct?",
+ opts:["Only 1","Only 2","Both 1 and 2","Neither 1 nor 2"],ans:1,
+ exp:"Black holes themselves do not emit X-rays; X-rays come from the hot accretion disc. Pulsars are indeed fast-spinning neutron stars."},
+
+{q:"Regarding the life cycle of stars, which statement is correct?",
+ opts:["All stars end as black holes","Sun-like average stars end as white dwarfs; massive stars may end as neutron stars or black holes","Massive stars end as white dwarfs","Stars never change"],ans:1,
+ exp:"Average stars → white dwarf; massive stars → red supergiant → supernova → neutron star or black hole."},
+
+{q:"Match List I with List II (Geomorphic processes): A. Weathering 1. Gravitational force / molecular stresses / chemical actions B. Mass movement 2. Kinetic energy C. Erosion & transportation 3. Gravitational force D. Exogenetic (denudation) processes 4. External forces acting on Earth's surface. Choose the correct match:",
+ opts:["A-2, B-3, C-1, D-4","A-1, B-3, C-2, D-4","A-4, B-3, C-2, D-1","A-1, B-2, C-3, D-4"],ans:1,
+ exp:"Weathering = stress/chemical action; mass movement = gravity; erosion = kinetic energy; exogenetic = external forces."},
+
+{q:"Consider the following statements: 1. The Thar desert experiences a significant difference between day and night temperatures. 2. The Andaman & Nicobar islands experience heavy variation between day and night temperatures. Which is/are correct?",
+ opts:["Only 1","Only 2","Both 1 and 2","Neither 1 nor 2"],ans:0,
+ exp:"Continentality causes large diurnal ranges (Thar); coastal/island areas have maritime moderation — small day-night variation."},
+
+{q:"A 'Caldera' is best described as:",
+ opts:["A small conical volcano","A vast volcanic crater formed after a magma chamber empties and collapses","An underwater trench","A lava plateau"],ans:1,
+ exp:"Calderas form when a magma chamber empties and the overlying structure collapses."},
+
+{q:"Consider the following statements about winds: I. Westerlies are found between the sub-tropical high pressure belt and the sub-polar low pressure belt. II. The westerlies are a local wind system. Which is/are correct?",
+ opts:["Only I","Only II","Both I and II","Neither I nor II"],ans:0,
+ exp:"Westerlies are permanent/global planetary winds between 30°–60°, not local winds."},
+
+{q:"Which NASA mission, launched on 1 April 2026, was the first crewed lunar flyby in over 50 years?",
+ opts:["Artemis I","Artemis II","Apollo 17","Orion Crew-9"],ans:1,
+ exp:"Artemis II (April 2026) carried 4 astronauts around the Moon in the Orion spacecraft, paving the way for lunar landing and Mars missions."},
+
+{q:"Which of the following planets rotate from east to west (retrograde rotation)?",
+ opts:["Mars and Jupiter","Venus and Uranus","Mercury and Saturn","Earth and Neptune"],ans:1,
+ exp:"Venus and Uranus are the only two planets in our solar system with retrograde (westward) spin."}
+];
+
+// Topic tag per question (same order) - used for weak/strong analytics
+const QUESTION_TOPICS = ["Plate Tectonics", "Earth's Interior", "Earth's Interior", "Earth's Interior", "Earth's Interior", "Earth's Interior", "Earth's Interior", "Earth's Interior", "Earth's Interior", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Plate Tectonics", "Glacial Landforms", "Glacial Landforms", "Glacial Landforms", "Glacial Landforms", "Glacial Landforms", "Glacial Landforms", "Glacial Landforms", "Glacial Landforms", "Radioactivity", "Radioactivity", "Radioactivity", "Astronomy & Space", "Astronomy & Space", "Astronomy & Space", "Astronomy & Space", "Astronomy & Space", "International Organizations", "International Organizations", "International Organizations", "International Organizations", "International Organizations", "Climatology", "World Geography", "World Geography", "World Geography", "World Geography", "World Geography", "World Geography", "Climatology", "Climatology", "Climatology", "Climatology", "Climatology", "Climatology", "Climatology", "Oceanography", "Oceanography", "India & Neighbours", "Climatology", "Climatology", "Astronomy & Space", "Astronomy & Space", "Geomorphology", "Climatology", "Geomorphology", "Climatology", "Oceanography", "Astronomy & Space"];

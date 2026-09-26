@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSC CGL Mock Test - Geography</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="questions.js"></script>
+<style>
+:root{--blue:#1a3c8f;--blue2:#2f5fd0;--green:#2e9e4f;--red:#d33f3f;--purple:#8e44ad;--notans:#e0e0e0;--amber:#f39c12;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,Arial,sans-serif;}
+body{background:#f0f4fa;color:#222;}
+.hidden{display:none!important;}
+/* header */
+header{background:var(--blue);color:#fff;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:50;}
+header .logo{font-weight:700;font-size:18px;}
+.timer{background:#c62828;padding:6px 16px;border-radius:6px;font-weight:700;font-size:18px;font-variant-numeric:tabular-nums;}
+.langbtn{background:#fff;color:var(--blue);border:none;padding:6px 12px;border-radius:5px;cursor:pointer;font-weight:600;}
+/* screens */
+.screen{max-width:1000px;margin:24px auto;padding:0 16px;}
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,.08);padding:28px;}
+h1{font-size:26px;color:var(--blue);margin-bottom:8px;}
+.muted{color:#666;font-size:14px;}
+input[type=text]{width:100%;padding:12px;border:2px solid #cdd6e4;border-radius:8px;font-size:16px;margin:10px 0;}
+input[type=text]:focus{outline:none;border-color:var(--blue2);}
+.btn{border:none;border-radius:8px;padding:12px 26px;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;}
+.btn-primary{background:var(--blue2);color:#fff;}
+.btn-primary:hover{background:var(--blue);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-amber{background:var(--amber);color:#fff;}
+.btn-grey{background:#e9edf3;color:#333;}
+.btn-purple{background:var(--purple);color:#fff;}
+.btn-red{background:var(--red);color:#fff;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+/* quiz layout */
+.quiz-wrap{display:flex;gap:16px;margin:16px auto;max-width:1200px;padding:0 12px;}
+.q-panel{flex:1;background:#fff;border-radius:10px;box-shadow:0 3px 12px rgba(0,0,0,.07);padding:20px;min-height:420px;display:flex;flex-direction:column;}
+.q-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #eef2f8;padding-bottom:10px;margin-bottom:14px;}
+.q-head .qnum{font-weight:700;color:var(--blue);font-size:16px;}
+.topicchip{background:#e8f4ea;color:#2e7d43;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-right:8px;}
+.markbadge{background:#fdf0d5;color:#8a6d1a;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;}
+.q-text{font-size:17px;line-height:1.55;margin-bottom:16px;}
+.opt{display:block;width:100%;text-align:left;padding:12px 14px;margin:8px 0;border:2px solid #dbe2ee;border-radius:8px;background:#fafbfe;cursor:pointer;font-size:15px;}
+.opt:hover{border-color:var(--blue2);}
+.opt.sel{border-color:var(--blue2);background:#e8effc;font-weight:600;}
+.opt .key{display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;background:#dbe2ee;margin-right:10px;font-weight:700;}
+.opt.sel .key{background:var(--blue2);color:#fff;}
+.q-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:16px;border-top:1px solid #eef2f8;}
+/* palette */
+.palette{width:270px;background:#fff;border-radius:10px;box-shadow:0 3px 12px rgba(0,0,0,.07);padding:16px;align-self:flex-start;position:sticky;top:70px;}
+.palette h3{font-size:14px;color:var(--blue);margin-bottom:10px;}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;margin-bottom:12px;color:#444;}
+.dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:middle;}
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;max-height:300px;overflow-y:auto;padding:4px;}
+.pnum{border:none;border-radius:6px;padding:8px 0;font-weight:700;cursor:pointer;font-size:13px;background:#e8ecf3;color:#555;}
+.pnum.current{outline:3px solid var(--blue2);}
+.pnum.ans{background:var(--green);color:#fff;}
+.pnum.notans{background:var(--red);color:#fff;}
+.pnum.marked{background:var(--purple);color:#fff;}
+.pnum.ansmarked{background:var(--blue2);color:#fff;}
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:100;}
+.modal{background:#fff;border-radius:12px;padding:26px;width:90%;max-width:440px;}
+.modal h2{color:var(--blue);margin-bottom:10px;}
+.sumrow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #ddd;font-size:14px;}
+/* result */
+.score-big{font-size:54px;font-weight:800;color:var(--blue);text-align:center;}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0;}
+.stat{background:#f6f9ff;border-radius:10px;padding:14px;text-align:center;}
+.stat b{display:block;font-size:24px;}
+.stat span{font-size:12px;color:#666;}
+.review-q{border:1px solid #e2e8f2;border-radius:8px;padding:14px;margin:10px 0;}
+.review-q .correct{color:var(--green);font-weight:700;}
+.review-q .wrong-a{color:var(--red);font-weight:700;}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:12px;margin-left:8px;}
+.tag.ok{background:#e5f6ea;color:var(--green);}
+.tag.bad{background:#fdeaea;color:var(--red);}
+.tag.skip{background:#f0f0f0;color:#777;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th,td{padding:8px 10px;border-bottom:1px solid #eee;text-align:left;}
+th{background:var(--blue);color:#fff;}
+@media(max-width:860px){.quiz-wrap{flex-direction:column;}.palette{width:100%;position:static;}.statgrid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🎯 SSC CGL Mock Test &nbsp;|&nbsp; <span id="hdrName"></span></div>
+  <div>
+    <span class="timer notranslate" id="timer">15:00</span>
+    <button class="langbtn" onclick="setLang('en')">English</button>
+    <button class="langbtn" onclick="setLang('hi')">हिंदी</button>
+  </div>
+</header>
+<div id="google_translate_element" style="display:none"></div>
+
+<!-- ============ SCREEN 1 : LOGIN ============ -->
+<div class="screen" id="scr-login">
+  <div class="card" style="max-width:480px;margin:40px auto;text-align:center;">
+    <h1>SSC CGL Geography Mock</h1>
+    <p class="muted">55 Questions &nbsp;•&nbsp; +2 Marks each &nbsp;•&nbsp; −0.25 negative &nbsp;•&nbsp; 15 Minutes</p>
+    <input type="text" id="studentName" maxlength="40" placeholder="Enter your full name">
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button class="btn btn-primary" onclick="startQuiz()">Start Test ➜</button>
+    </div>
+    <p class="muted" style="margin-top:14px;">🔒 Your name &amp; score will be saved so your teacher can view the leaderboard.</p>
+  </div>
+</div>
+
+<!-- ============ SCREEN 2 : INSTRUCTIONS ============ -->
+<div class="screen hidden" id="scr-inst">
+  <div class="card">
+    <h1>Instructions</h1>
+    <ol style="margin:14px 0 14px 22px;line-height:1.9;font-size:15px;">
+      <li>Total <b>55 questions</b>, time <b>15 minutes</b>. Timer auto-submits the test.</li>
+      <li>Each correct answer: <b>+2 marks</b>; wrong answer: <b>−0.25 marks</b>; unattempted: 0.</li>
+      <li><b>Save &amp; Next</b> stores your answer. <b>Mark for Review</b> lets you revisit later.</li>
+      <li>The <b>Question Palette</b> (right side) shows status of every question — click any number to jump.</li>
+      <li>Click <b>Submit</b> to finish, then see your score with full solutions.</li>
+      <li>Use the <b>हिंदी</b> / <b>English</b> buttons to translate the entire test.</li>
+    </ol>
+    <label style="font-size:14px;display:block;margin-bottom:14px;"><input type="checkbox" id="agree"> I have read the instructions</label>
+    <button class="btn btn-green" id="btnBegin" disabled onclick="beginTest()">Begin Test ▶</button>
+  </div>
+</div>
+
+<!-- ============ SCREEN 3 : QUIZ ============ -->
+<div class="quiz-wrap hidden" id="scr-quiz">
+  <div class="q-panel">
+    <div class="q-head">
+      <span class="qnum" id="qNum">Question 1 of 55</span>
+      <span class="topicchip" id="qTopic"></span>
+      <span class="markbadge hidden" id="mkBadge">★ Marked for Review</span>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div id="qOpts"></div>
+    <div class="q-actions">
+      <button class="btn btn-primary" onclick="saveNext()">Save &amp; Next</button>
+      <button class="btn btn-purple" onclick="markReview()">Mark for Review &amp; Next</button>
+      <button class="btn btn-amber" onclick="clearResp()">Clear Response</button>
+      <button class="btn btn-red" style="margin-left:auto" onclick="askSubmit()">Submit Test</button>
+    </div>
+  </div>
+  <div class="palette">
+    <h3>Question Palette</h3>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--green)"></i>Answered</span>
+      <span><i class="dot" style="background:var(--red)"></i>Not Answered</span>
+      <span><i class="dot" style="background:var(--purple)"></i>Marked</span>
+      <span><i class="dot" style="background:#e8ecf3"></i>Not Visited</span>
+      <span><i class="dot" style="background:var(--blue2)"></i>Ans &amp; Marked</span>
+      <span><i class="dot" style="background:#c62828"></i>Time Left</span>
+    </div>
+    <div class="pgrid" id="pGrid"></div>
+    <div style="margin-top:12px;font-size:13px;color:#555;" id="pSummary"></div>
+  </div>
+</div>
+
+<!-- ============ SCREEN 4 : RESULT ============ -->
+<div class="screen hidden" id="scr-result">
+  <div class="card" style="text-align:center;">
+    <h1 id="resTitle">Result</h1>
+    <p class="muted" id="resSub"></p>
+    <div class="score-big" id="resScore">0</div>
+    <p class="muted">out of <span id="resTotal">110</span> marks</p>
+    <div class="statgrid">
+      <div class="stat"><b style="color:var(--green)" id="stCorrect">0</b><span>Correct</span></div>
+      <div class="stat"><b style="color:var(--red)" id="stWrong">0</b><span>Wrong</span></div>
+      <div class="stat"><b style="color:#777" id="stSkip">0</b><span>Skipped</span></div>
+      <div class="stat"><b style="color:var(--blue)" id="stAccuracy">0%</b><span>Accuracy</span></div>
+    </div>
+    <p id="saveNote" class="muted"></p>
+    <div style="margin:14px 0;">
+      <button class="btn btn-primary" onclick="location.reload()">Retake Test</button>
+      <button class="btn btn-grey" onclick="toggleReview()">View Solutions ▾</button>
+    </div>
+  </div>
+  <div class="card hidden" id="reviewCard" style="margin-top:16px;">
+    <h1 style="font-size:20px;">Solutions &amp; Answer Key</h1>
+    <div id="reviewList"></div>
+  </div>
+</div>
+
+<!-- submit modal -->
+<div class="modal-bg hidden" id="submitModal">
+  <div class="modal">
+    <h2>Submit Test?</h2>
+    <div id="modalSummary"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;">
+      <button class="btn btn-grey" onclick="document.getElementById('submitModal').classList.add('hidden')">Back to Test</button>
+      <button class="btn btn-green" onclick="finalSubmit()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ================= CONFIG ================= */
+const TOTAL_MINUTES = 15;
+const MARKS_CORRECT = 2, MARKS_WRONG = -0.25;
+let sb = null;
+try{
+  if(SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes('YOUR_PROJECT'))
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}catch(e){ console.warn('Supabase not configured:', e); }
+
+/* ================= GOOGLE TRANSLATE ================= */
+function googleTranslateElementInit(){
+  new google.translate.TranslateElement({pageLanguage:'en',includedLanguages:'en,hi',autoDisplay:false},'google_translate_element');
+}
+(function(){var gt=document.createElement('script');gt.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';document.head.appendChild(gt);})();
+function setLang(lang){
+  var combo=document.querySelector('.goog-te-combo');
+  if(combo){combo.value=lang;combo.dispatchEvent(new Event('change'));}
+  else setTimeout(function(){setLang(lang);},800);
+}
+
+/* ================= STATE ================= */
+let name='', cur=0, answers=[], marked=[], visited=[];
+let secondsLeft=TOTAL_MINUTES*60, timerInt=null, submitted=false;
+for(let i=0;i<QUESTIONS.length;i++){answers.push(-1);marked.push(false);visited.push(false);}
+
+/* ================= NAVIGATION ================= */
+function show(id){['scr-login','scr-inst','scr-quiz','scr-result'].forEach(s=>document.getElementById(s).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+
+function startQuiz(){
+  name=document.getElementById('studentName').value.trim();
+  if(!name){alert('Please enter your name');return;}
+  document.getElementById('hdrName').textContent=name;
+  show('scr-inst');
+}
+document.getElementById('agree').addEventListener('change',function(){document.getElementById('btnBegin').disabled=!this.checked;});
+
+function beginTest(){show('scr-quiz');renderQ();renderPalette();startTimer();}
+
+function startTimer(){
+  updateTimerDisplay();
+  timerInt=setInterval(function(){
+    secondsLeft--;
+    updateTimerDisplay();
+    if(secondsLeft<=0){clearInterval(timerInt);finalSubmit();}
+  },1000);
+}
+function updateTimerDisplay(){
+  var m=Math.floor(secondsLeft/60),s=secondsLeft%60;
+  document.getElementById('timer').textContent=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+}
+
+/* ================= RENDER QUESTION ================= */
+const KEYS=['A','B','C','D','E'];
+function renderQ(){
+  visited[cur]=true;
+  var q=QUESTIONS[cur];
+  document.getElementById('qNum').textContent='Question '+(cur+1)+' of '+QUESTIONS.length;
+  document.getElementById('qText').innerHTML='<b>Q'+(cur+1)+'.</b> '+q.q;
+  document.getElementById('qTopic').textContent=(typeof QUESTION_TOPICS!=='undefined')?('📚 '+QUESTION_TOPICS[cur]):'';
+  var box=document.getElementById('qOpts');box.innerHTML='';
+  q.opts.forEach(function(o,i){
+    var b=document.createElement('button');
+    b.className='opt'+(answers[cur]===i?' sel':'');
+    b.innerHTML='<span class="key">'+KEYS[i]+'</span>'+o;
+    b.onclick=function(){answers[cur]=i;renderQ();};
+    box.appendChild(b);
+  });
+  document.getElementById('mkBadge').classList.toggle('hidden',!marked[cur]);
+  renderPalette();
+}
+
+/* ================= PALETTE ================= */
+function renderPalette(){
+  var g=document.getElementById('pGrid');g.innerHTML='';
+  var a=0,na=0,mk=0,nv=0,am=0;
+  for(var i=0;i<QUESTIONS.length;i++){
+    var st='';
+    if(answers[i]>-1&&marked[i]){st='ansmarked';am++;}
+    else if(answers[i]>-1){st='ans';a++;}
+    else if(marked[i]){st='marked';mk++;}
+    else if(visited[i]){st='notans';na++;}
+    else nv++;
+    var b=document.createElement('button');
+    b.className='pnum '+st+(i===cur?' current':'');
+    b.textContent=i+1;
+    b.onclick=function(){cur=parseInt(this.textContent)-1;renderQ();};
+    g.appendChild(b);
+  }
+  document.getElementById('pSummary').innerHTML=
+    'Answered: <b>'+a+'</b> • Not Answered: <b>'+(na+mk+am+(visited.filter(function(v,i){return v&&answers[i]===-1&&!marked[i];}).length))+'</b> • Not Visited: <b>'+nv+'</b> • Marked: <b>'+(mk+am)+'</b>';
+}
+
+/* ================= ACTIONS ================= */
+function saveNext(){go(cur+1);}
+function markReview(){marked[cur]=true;go(cur+1);}
+function clearResp(){answers[cur]=-1;renderQ();}
+function go(n){ if(n>=QUESTIONS.length){askSubmit();return;} cur=Math.max(0,n);renderQ(); }
+
+/* ================= SUBMIT ================= */
+function askSubmit(){
+  if(submitted)return;
+  var a=answers.filter(function(x){return x>-1;}).length;
+  var mk=marked.filter(Boolean).length;
+  document.getElementById('modalSummary').innerHTML=
+    '<div class="sumrow"><span>Total Questions</span><b>'+QUESTIONS.length+'</b></div>'+
+    '<div class="sumrow"><span>Answered</span><b style="color:var(--green)">'+a+'</b></div>'+
+    '<div class="sumrow"><span>Unattempted</span><b style="color:var(--red)">'+(QUESTIONS.length-a)+'</b></div>'+
+    '<div class="sumrow"><span>Marked for Review</span><b style="color:var(--purple)">'+mk+'</b></div>'+
+    '<div class="sumrow"><span>Time Left</span><b>'+document.getElementById('timer').textContent+'</b></div>';
+  document.getElementById('submitModal').classList.remove('hidden');
+}
+
+function finalSubmit(){
+  if(submitted)return; submitted=true;
+  clearInterval(timerInt);
+  document.getElementById('submitModal').classList.add('hidden');
+  var correct=0,wrong=0,skip=0,score=0;
+  answers.forEach(function(ans,i){
+    if(ans===-1)skip++;
+    else if(ans===QUESTIONS[i].ans){correct++;score+=MARKS_CORRECT;}
+    else{wrong++;score+=MARKS_WRONG;}
+  });
+  score=Math.round(score*100)/100;
+  var total=QUESTIONS.length*MARKS_CORRECT;
+  var acc=(correct+wrong)>0?Math.round(correct/(correct+wrong)*100):0;
+
+  document.getElementById('resTitle').textContent='🎉 Well done, '+name+'!';
+  document.getElementById('resSub').textContent='SSC CGL Geography Mock • '+new Date().toLocaleString();
+  document.getElementById('resScore').textContent=score;
+  document.getElementById('resTotal').textContent=total;
+  document.getElementById('stCorrect').textContent=correct;
+  document.getElementById('stWrong').textContent=wrong;
+  document.getElementById('stSkip').textContent=skip;
+  document.getElementById('stAccuracy').textContent=acc+'%';
+  show('scr-result');
+
+  /* review list */
+  var rl=document.getElementById('reviewList');rl.innerHTML='';
+  QUESTIONS.forEach(function(q,i){
+    var st=answers[i]===-1?'<span class="tag skip">Skipped</span>':(answers[i]===q.ans?'<span class="tag ok">Correct +'+MARKS_CORRECT+'</span>':'<span class="tag bad">Wrong '+MARKS_WRONG+'</span>');
+    var wrongLine=answers[i]>-1&&answers[i]!==q.ans?'<p class="wrong-a">✗ Your answer: '+KEYS[answers[i]]+'. '+q.opts[answers[i]]+'</p>':'';
+    var div=document.createElement('div');div.className='review-q';
+    div.innerHTML='<p><b>Q'+(i+1)+'.</b> '+q.q+' '+st+' <span class="topicchip" style="font-size:11px">'+(typeof QUESTION_TOPICS!=='undefined'?QUESTION_TOPICS[i]:'')+'</span></p>'+
+      '<p class="correct">✔ Correct answer: '+KEYS[q.ans]+'. '+q.opts[q.ans]+'</p>'+wrongLine+
+      '<p class="muted" style="margin-top:6px">💡 '+q.exp+'</p>';
+    rl.appendChild(div);
+  });
+
+  /* save to supabase */
+  if(sb){
+    sb.from('quiz_results').insert({
+      name:name, score:score, total:total, correct:correct, wrong:wrong, skipped:skip,
+      answers:answers, topics:(typeof QUESTION_TOPICS!=='undefined'?QUESTION_TOPICS:null), quiz_title:'Geography Day 1'
+    }).then(function(r){
+      document.getElementById('saveNote').textContent = r.error ? '⚠ Could not save result: '+r.error.message : '✅ Result saved — visible on the teacher leaderboard.';
+    });
+  }else{
+    document.getElementById('saveNote').textContent='⚠ Supabase not configured — results are not being stored (see README).';
+  }
+}
+
+function toggleReview(){document.getElementById('reviewCard').classList.toggle('hidden');}
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('scr-quiz').classList.contains('hidden'))return;
+  if(e.key>='1'&&e.key<='4'){answers[cur]=parseInt(e.key)-1;renderQ();}
+  if(e.key==='ArrowRight')go(cur+1);
+  if(e.key==='ArrowLeft')go(cur-1);
+});
+</script>
+</body>
+</html>
