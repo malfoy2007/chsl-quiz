@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>भूगोल PYQ Quiz — Geography Test</title>
+<style>
+  :root{
+    --ink:#1b2333; --paper:#f7f5ef; --paper2:#fffdf8; --line:#dcd5c4;
+    --accent:#b8791f; --accent-deep:#8a5a15; --correct:#2f6b4f; --wrong:#a13d3d;
+    --muted:#6b6455;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:-apple-system,"Segoe UI","Noto Sans Devanagari","Nirmala UI","Kohinoor Devanagari",system-ui,sans-serif;
+    line-height:1.5; padding:24px 14px 60px;
+  }
+  .headfont{font-family:Georgia,"Noto Serif Devanagari","Iowan Old Style",serif;}
+  .wrap{max-width:640px;margin:0 auto;}
+
+  .masthead{
+    border:1px solid var(--line); border-bottom:3px solid var(--ink);
+    background:var(--paper2); padding:18px 20px; display:flex;
+    align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .masthead h1{margin:0;font-size:1.25rem;font-weight:600;}
+  .masthead .sub{margin:2px 0 0;font-size:.8rem;color:var(--muted);}
+  .langtoggle{display:flex;border:1px solid var(--ink);border-radius:3px;overflow:hidden;flex-shrink:0;}
+  .langtoggle button{
+    border:none;background:var(--paper2);color:var(--ink);padding:7px 14px;
+    font-size:.85rem;cursor:pointer;font-weight:600;
+  }
+  .langtoggle button.active{background:var(--ink);color:var(--paper2);}
+  .langtoggle button:not(.active):hover{background:var(--paper);}
+
+  .card{
+    border:1px solid var(--line); background:var(--paper2); margin-top:16px;
+    padding:26px 22px;
+  }
+
+  /* Start screen */
+  .start p{color:var(--muted);font-size:.95rem;}
+  .stats{display:flex;gap:18px;margin:18px 0;flex-wrap:wrap;}
+  .stat{border-left:3px solid var(--accent);padding:2px 0 2px 12px;}
+  .stat .num{font-size:1.5rem;font-weight:700;font-family:Georgia,serif;}
+  .stat .lbl{font-size:.78rem;color:var(--muted);}
+  .btn{
+    display:inline-block; background:var(--ink); color:var(--paper2);
+    border:none; padding:12px 26px; font-size:.95rem; font-weight:600;
+    cursor:pointer; margin-top:8px;
+  }
+  .btn:hover{background:var(--accent-deep);}
+  .btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--ink);}
+  .btn.secondary:hover{background:var(--paper);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  /* Progress */
+  .progress-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;font-size:.82rem;color:var(--muted);}
+  .progress-track{height:4px;background:var(--line);width:100%;}
+  .progress-fill{height:100%;background:var(--accent);transition:width .25s ease;}
+
+  /* Question */
+  .qcat{font-size:.75rem;color:var(--accent-deep);font-weight:700;margin-bottom:6px;}
+  .qtext{font-size:1.08rem;white-space:pre-line;margin:0 0 18px;font-weight:600;}
+  .opt{
+    display:flex; gap:12px; align-items:flex-start; border:1px solid var(--line);
+    padding:12px 14px; margin-bottom:9px; cursor:pointer; background:var(--paper2);
+  }
+  .opt:hover{border-color:var(--accent);}
+  .opt .mk{
+    flex-shrink:0; width:24px; height:24px; border:1px solid var(--ink); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700;
+  }
+  .opt.selected{border-color:var(--accent);border-width:2px;background:#fbf2e2;}
+  .opt.selected .mk{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .opt.correct{border-color:var(--correct);border-width:2px;background:#eef6f1;}
+  .opt.correct .mk{background:var(--correct);border-color:var(--correct);color:#fff;}
+  .opt.wrong{border-color:var(--wrong);border-width:2px;background:#fbeeee;}
+  .opt.wrong .mk{background:var(--wrong);border-color:var(--wrong);color:#fff;}
+  .opt.disabled{cursor:default;}
+
+  .explain{
+    margin-top:14px; padding:12px 14px; background:var(--paper); border-left:3px solid var(--accent);
+    font-size:.88rem; color:var(--ink); display:none;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--accent-deep);}
+
+  .navrow{display:flex; justify-content:space-between; margin-top:20px; gap:10px;}
+
+  /* Results */
+  .scoreline{text-align:center;padding:10px 0 6px;}
+  .scoreline .big{font-family:Georgia,serif;font-size:2.6rem;font-weight:700;}
+  .scoreline .of{color:var(--muted);font-size:.95rem;}
+  .reviewitem{border:1px solid var(--line); padding:14px; margin-top:10px;}
+  .reviewitem .qn{font-weight:600;margin-bottom:8px;white-space:pre-line;}
+  .reviewitem .rowopt{padding:7px 10px;border:1px solid var(--line);margin-bottom:5px;font-size:.9rem;}
+  .reviewitem .rowopt.correct{border-color:var(--correct);background:#eef6f1;}
+  .reviewitem .rowopt.wrongpick{border-color:var(--wrong);background:#fbeeee;}
+  .badge{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:2px;margin-left:8px;vertical-align:middle;}
+  .badge.right{background:var(--correct);color:#fff;}
+  .badge.miss{background:var(--wrong);color:#fff;}
+
+  .hidden{display:none !important;}
+  footer{text-align:center;color:var(--muted);font-size:.75rem;margin-top:28px;}
+  a.linklike{color:var(--accent-deep);cursor:pointer;text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <h1 class="headfont" id="mastTitle">भूगोल PYQ Series — Geography Test</h1>
+      <p class="sub" id="mastSub">100 questions · PARMAR SSC GK PYQ Series 6</p>
+    </div>
+    <div class="langtoggle" id="langToggle">
+      <button data-lang="en">English</button>
+      <button data-lang="hi">हिंदी</button>
+    </div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="card start" id="startScreen">
+    <p id="startP">This offline test covers atmosphere, rivers, dams, landforms, oceans, climate, minerals and more — drawn from the PYQ Series 6 notes. Pick your language above, then begin.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">100</div><div class="lbl" id="lblQ">Questions</div></div>
+      <div class="stat"><div class="num">28</div><div class="lbl" id="lblS">Statement-based</div></div>
+      <div class="stat"><div class="num">2</div><div class="lbl" id="lblL">Languages</div></div>
+    </div>
+    <button class="btn" id="startBtn">Start Test</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="card hidden" id="quizScreen">
+    <div class="progress-row">
+      <span id="progLabel">Question 1 / 100</span>
+      <span id="scoreLive">Score: 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progFill" style="width:1%"></div></div>
+    <div style="margin-top:18px;">
+      <div class="qcat" id="qCat"></div>
+      <div class="qtext" id="qText"></div>
+      <div id="optList"></div>
+      <div class="explain" id="explainBox"></div>
+    </div>
+    <div class="navrow">
+      <button class="btn secondary" id="quitBtn">End Test</button>
+      <button class="btn" id="nextBtn" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="card hidden" id="resultScreen">
+    <div class="scoreline">
+      <div class="big" id="finalScore">0 / 100</div>
+      <div class="of" id="finalPct">0% correct</div>
+    </div>
+    <div style="text-align:center;margin-top:10px;">
+      <button class="btn secondary" id="retakeBtn">Retake Test</button>
+      <button class="btn" id="reviewBtn">Review Answers</button>
+    </div>
+    <div id="reviewList" class="hidden"></div>
+  </div>
+
+  <footer id="foot">Works fully offline — no internet connection needed.</footer>
+</div>
+
+<script>
+/* ---------- DATA ---------- */
+const Q = [
+["Atmosphere","mcq","What is the approximate concentration of oxygen in Earth's atmosphere?","पृथ्वी के वायुमंडल में ऑक्सीजन की सांद्रता लगभग कितनी है?",["18%","21%","78%","0.9%"],["18%","21%","78%","0.9%"],1,"Oxygen makes up about 21% of the atmosphere, after Nitrogen (78%).","नाइट्रोजन (78%) के बाद ऑक्सीजन वायुमंडल का लगभग 21% भाग बनाती है।"],
+["Atmosphere","mcq","Which gas forms the largest share of Earth's atmosphere?","पृथ्वी के वायुमंडल में किस गैस का सबसे बड़ा हिस्सा है?",["Oxygen","Nitrogen","Argon","Carbon Dioxide"],["ऑक्सीजन","नाइट्रोजन","आर्गन","कार्बन डाइऑक्साइड"],1,"Nitrogen constitutes about 78% of the atmosphere.","नाइट्रोजन वायुमंडल का लगभग 78% भाग बनाती है।"],
+["Atmosphere","mcq","Approximately what percentage of the atmosphere is Argon (Ar)?","आर्गन (Ar) वायुमंडल का लगभग कितना प्रतिशत है?",["0.036%","0.9%","21%","0.0018%"],["0.036%","0.9%","21%","0.0018%"],1,"Argon is about 0.9% of the atmosphere.","आर्गन वायुमंडल का लगभग 0.9% है।"],
+["Atmosphere","mcq","Argon is commonly used in which of the following?","आर्गन का उपयोग सामान्यतः निम्नलिखित में से किसमें होता है?",["Double-pane window glazing & bulbs","Fire extinguishers","Refrigeration","Welding torches only"],["डबल पेन खिड़की के शीशों व बल्ब में","अग्निशामक यंत्रों में","प्रशीतन में","केवल वेल्डिंग टॉर्च में"],0,"Argon is used in double-pane window glazing and light bulbs.","आर्गन का उपयोग डबल पेन खिड़की के शीशों और बल्ब में होता है।"],
+["Atmosphere","statement","Consider the following statements about noble gases (Group 18):\n1. Helium, Neon, Argon, Krypton, Xenon and Radon belong to this group.\n2. These gases are chemically highly reactive.\nWhich of the statements given above is/are correct?","उत्कृष्ट गैसों (18वां समूह) के बारे में निम्नलिखित कथनों पर विचार करें:\n1. हीलियम, नियॉन, आर्गन, क्रिप्टन, जीनॉन और रेडॉन इस समूह से संबंधित हैं।\n2. ये गैसें रासायनिक रूप से अत्यधिक क्रियाशील हैं।\nउपरोक्त में से कौन सा/से कथन सही है/हैं?",["1 only","2 only","Both 1 and 2","Neither 1 nor 2"],["केवल 1","केवल 2","1 और 2 दोनों","न तो 1 और न ही 2"],0,"Noble gases are inert (chemically unreactive), so statement 2 is wrong.","उत्कृष्ट गैसें अक्रिय होती हैं, इसलिए कथन 2 गलत है।"],
+["Atmosphere","mcq","Carbon dioxide turns limewater milky and produces which effect?","कार्बन डाइऑक्साइड चूने के पानी को दूधिया कर देती है और कौन सा प्रभाव देती है?",["A sweet smell","Intense effervescence/foam","No visible change","A blue color"],["मीठी गंध","तीव्र बुदबुदाहट/झाग","कोई दृश्य परिवर्तन नहीं","नीला रंग"],1,"CO2 causes intense effervescence or foam when reacting with limewater.","CO2 चूने के पानी के साथ अभिक्रिया करने पर तीव्र बुदबुदाहट या झाग पैदा करती है।"],
+["Atmosphere","mcq","Which of these is NOT one of the noble gases (memory trick 'Hema Neha aur Karina')?","निम्नलिखित में से कौन उत्कृष्ट गैसों में से नहीं है?",["Helium","Xenon","Nitrogen","Radon"],["हीलियम","जीनॉन","नाइट्रोजन","रेडॉन"],2,"Nitrogen is not a noble gas; it belongs to Group 15.","नाइट्रोजन उत्कृष्ट गैस नहीं है; यह समूह 15 से संबंधित है।"],
+["Atmosphere","mcq","Approximately what percentage of the atmosphere is Carbon Dioxide (CO2)?","कार्बन डाइऑक्साइड (CO2) वायुमंडल का लगभग कितना प्रतिशत है?",["0.036%","3.6%","21%","0.9%"],["0.036%","3.6%","21%","0.9%"],0,"CO2 is about 0.036% of the atmosphere.","CO2 वायुमंडल का लगभग 0.036% है।"],
+["Solar & Atmosphere Layers","mcq","During solar storms, what is the most likely cause of temperature rise in the thermosphere?","सौर तूफानों के दौरान तापमंडल में तापमान वृद्धि का सबसे संभावित कारण क्या है?",["Volcanic ash","UV and X-ray absorption","Ocean currents","Magnetic reversal"],["ज्वालामुखी राख","UV और एक्स-रे अवशोषण","महासागरीय धाराएं","चुंबकीय उत्क्रमण"],1,"Absorption of UV and X-ray radiation causes temperature rise in the thermosphere.","UV और एक्स-रे विकिरण के अवशोषण से तापमंडल में तापमान वृद्धि होती है।"],
+["Solar & Atmosphere Layers","mcq","What is mainly responsible for the Aurora near Earth's poles?","पृथ्वी के ध्रुवों के निकट ऑरोरा के लिए मुख्य रूप से कौन सी घटना जिम्मेदार है?",["Earthquake waves","Electrical discharge","Solar wind & magnetic field interaction","Volcanic ash spread"],["भूकंप की लहरें","बिजली का निर्वहन","सौर वायु और चुंबकीय क्षेत्र की परस्पर क्रिया","ज्वालामुखीय राख का फैलाव"],2,"Aurora forms from the interaction of solar wind with Earth's magnetic field.","ऑरोरा सौर वायु और पृथ्वी के चुंबकीय क्षेत्र की परस्पर क्रिया से बनता है।"],
+["Solar & Atmosphere Layers","statement","Evaluate the following statements about atmospheric layers:\n1. Most weather phenomena occur in the stratosphere.\n2. The ozone layer is mainly found in the troposphere.\nWhich of the above is/are correct?","वायुमंडलीय परतों के संबंध में इन कथनों का मूल्यांकन करें:\n1. अधिकांश मौसम संबंधी घटनाएं समताप मंडल में होती हैं।\n2. ओजोन परत मुख्य रूप से क्षोभमंडल में पाई जाती है।\nउपरोक्त में से कौन सा/से सही है/हैं?",["1 only","2 only","Both 1 and 2","Neither 1 nor 2"],["केवल कथन 1","केवल कथन 2","1 और 2 दोनों","न तो 1 और न ही 2"],3,"Weather occurs in the troposphere and ozone lies in the stratosphere — both statements are wrong.","मौसम की घटनाएं क्षोभमंडल में होती हैं और ओजोन समतापमंडल में मिलती है — दोनों कथन गलत हैं।"],
+["Solar & Atmosphere Layers","mcq","Up to approximately what altitude does Earth's atmosphere extend (Kármán line)?","पृथ्वी का वायुमंडल लगभग कितनी ऊंचाई तक पहुंचता है (कारमन रेखा)?",["100 km","1000 km","10,000 km","100,000 km"],["100 km","1000 km","10,000 km","100,000 km"],0,"The Kármán line, the boundary of space, is at about 100 km.","कारमन रेखा, अंतरिक्ष की सीमा, लगभग 100 km पर है।"],
+["Solar & Atmosphere Layers","mcq","Which atmospheric layer is coldest and where meteors typically burn up?","कौन सी वायुमंडलीय परत सबसे ठंडी है और जहां उल्कापिंड आमतौर पर जलकर नष्ट हो जाते हैं?",["Troposphere","Stratosphere","Mesosphere","Thermosphere"],["क्षोभमंडल","समतापमंडल","मध्यमंडल","तापमंडल"],2,"The mesosphere is the coldest layer where meteoroids burn up.","मध्यमंडल सबसे ठंडी परत है जहां उल्कापिंड जलकर नष्ट हो जाते हैं।"],
+["Solar & Atmosphere Layers","mcq","India's solar mission Aditya-L1 is positioned at approximately what distance from Earth?","भारत का सौर मिशन आदित्य-L1 पृथ्वी से लगभग कितनी दूरी पर स्थित है?",["1.5 lakh km","15 lakh km","150 lakh km","1500 lakh km"],["1.5 लाख किमी","15 लाख किमी","150 लाख किमी","1500 लाख किमी"],1,"Aditya-L1 is at the L1 Lagrange point, about 15 lakh km from Earth.","आदित्य-L1 L1 लैग्रेंज बिंदु पर, पृथ्वी से लगभग 15 लाख किमी दूर स्थित है।"],
+["Ramsar Sites","mcq","Which Ramsar site in India is recognized for hosting the largest population of Sarus Crane?","भारत में सारस क्रेन की सबसे बड़ी आबादी की मेजबानी के लिए किस रामसर स्थल को मान्यता दी गई है?",["Chilika Lake","Sarsai Nawar Jheel","Sambhar Lake","Loktak Lake"],["चिल्का झील","सरसई नावर झील","सांभर झील","लोकटक झील"],1,"Sarsai Nawar wetland, Uttar Pradesh is recognized for Sarus Crane population.","सरसई नावर आर्द्रभूमि, उत्तर प्रदेश सारस क्रेन की आबादी के लिए मान्यता प्राप्त है।"],
+["Ramsar Sites","statement","Consider the following statements:\n1. Chilika Lake and Keoladeo National Park were the first Ramsar sites named in India in 1981.\n2. The Ramsar Convention was signed in 1971 in Iran.\nWhich of the statements above is/are correct?","निम्नलिखित कथनों पर विचार करें:\n1. चिल्का झील और केवलादेव राष्ट्रीय उद्यान को 1981 में भारत के पहले रामसर स्थलों के रूप में नामित किया गया।\n2. रामसर कन्वेंशन पर 1971 में ईरान में हस्ताक्षर किए गए थे।\nउपरोक्त में से कौन सा/से कथन सही है/हैं?",["1 only","2 only","Both 1 and 2","Neither 1 nor 2"],["केवल 1","केवल 2","1 और 2 दोनों","न तो 1 और न ही 2"],2,"Both statements are historically accurate.","दोनों कथन ऐतिहासिक रूप से सही हैं।"],
+["Ramsar Sites","mcq","Which lake is India's largest inland saline lake?","भारत की सबसे बड़ी अंतर्देशीय खारे पानी की झील कौन सी है?",["Sambhar Lake","Wular Lake","Chilika Lake","Loktak Lake"],["सांभर झील","वुलर झील","चिल्का झील","लोकटक झील"],0,"Sambhar Lake is India's largest saline lake (largest inland wetland).","सांभर झील भारत की सबसे बड़ी खारे पानी की झील है।"],
+["Ramsar Sites","mcq","Which is India's largest saltwater (brackish) lake overall?","समग्र रूप से भारत की सबसे बड़ी खारे पानी की झील कौन सी है?",["Wular Lake","Chilika Lake","Loktak Lake","Pulicat Lake"],["वुलर झील","चिल्का झील","लोकटक झील","पुलिकट झील"],1,"Chilika Lake, Odisha, is India's largest brackish water lake.","चिल्का झील, ओडिशा, भारत की सबसे बड़ी खारे पानी की झील है।"],
+["Ramsar Sites","mcq","Loktak Lake, known for its 'Phumdis' (floating vegetation), is located in which state?","अपने 'फुमदी' (तैरती वनस्पति) के लिए प्रसिद्ध लोकटक झील किस राज्य में स्थित है?",["Manipur","Assam","Tripura","Mizoram"],["मणिपुर","असम","त्रिपुरा","मिजोरम"],0,"Loktak Lake is in Manipur, home to Keibul Lamjao National Park and the Sangai deer.","लोकटक झील मणिपुर में है, जो केबुल लामजाओ राष्ट्रीय उद्यान और संगाई हिरण का घर है।"],
+["Ramsar Sites","mcq","Which sites in India are listed under the Montreux Record (since 1990)?","भारत में कौन से स्थल मॉन्ट्रेक्स रिकॉर्ड (1990 से) के तहत सूचीबद्ध हैं?",["Chilika & Sambhar","Loktak Lake & Keoladeo National Park","Wular & Pulicat","Bhoj Wetland & Nalsarovar"],["चिल्का और सांभर","लोकटक झील और केवलादेव राष्ट्रीय उद्यान","वुलर और पुलिकट","भोज आर्द्रभूमि और नलसरोवर"],1,"Loktak Lake and Keoladeo National Park are listed under the Montreux Record since 1990.","लोकटक झील और केवलादेव राष्ट्रीय उद्यान मॉन्ट्रेक्स रिकॉर्ड के तहत सूचीबद्ध हैं।"],
+["Dams","mcq","Rihand Dam (also known as Govind Ballabh Pant Sagar Dam) is located in which district?","रिहंद बांध (गोविंद बल्लभ पंत सागर बांध) किस जिले में स्थित है?",["Sonbhadra, UP","Udaipur, Rajasthan","Singrauli, MP","Nashik, Maharashtra"],["सोनभद्र, उत्तर प्रदेश","उदयपुर, राजस्थान","सिंगरौली, मध्य प्रदेश","नासिक, महाराष्ट्र"],0,"Rihand Dam is in Sonbhadra district, UP, India's biggest artificial lake by volume.","रिहंद बांध सोनभद्र जिले, उत्तर प्रदेश में है।"],
+["Dams","statement","Consider the following statements about dams:\n1. A dam always refers to a concrete or structural wall built to hold back water.\n2. Spillways in dams help control water flow intermittently or continuously.\n3. Dams can be classified based on structure, purpose, and height.\nWhich of the above statements is/are correct?","बांधों के बारे में निम्नलिखित में से कौन सा/से कथन सही है/हैं?\n1. बांध का तात्पर्य हमेशा पानी को रोकने के लिए बनाई गई कंक्रीट या संरचनात्मक दीवार से होता है।\n2. बांधों में स्पिलवे पानी के प्रवाह को रुक-रुक कर या लगातार नियंत्रित करने में मदद करते हैं।\n3. संरचना, उद्देश्य और ऊंचाई के आधार पर बांधों को वर्गीकृत किया जा सकता है।",["1 and 2 only","2 and 3 only","1 and 3 only","1, 2 and 3"],["1 और 2 दोनों","2 और 3 दोनों","1 और 3 दोनों","1, 2 और 3 सभी सही हैं"],1,"A dam need not always be concrete; statement 1 is incorrect. Statements 2 and 3 are correct.","बांध हमेशा कंक्रीट का नहीं होता; कथन 1 गलत है। कथन 2 और 3 सही हैं।"],
+["Dams","mcq","Which dam is India's biggest dam by volume of water storage capacity (10.6 billion cubic meters)?","जल भंडारण क्षमता (10.6 बिलियन क्यूबिक मीटर) के हिसाब से भारत का सबसे बड़ा बांध कौन सा है?",["Bhakra Nangal","Tehri Dam","Rihand Dam","Hirakud Dam"],["भाखड़ा नांगल","टिहरी बांध","रिहंद बांध","हीराकुंड बांध"],2,"Rihand Dam has capacity of 10.6 billion cubic meters, the largest by volume.","रिहंद बांध की क्षमता 10.6 बिलियन क्यूबिक मीटर है।"],
+["Dams","mcq","Dhebar Lake (Jaisamand Lake), India's second largest artificial lake by volume, is in which district?","ढेबर झील (जयसमंद झील), भारत की दूसरी सबसे बड़ी कृत्रिम झील, किस जिले में है?",["Udaipur, Rajasthan","Sonbhadra, UP","Jaipur, Rajasthan","Bhopal, MP"],["उदयपुर, राजस्थान","सोनभद्र, उत्तर प्रदेश","जयपुर, राजस्थान","भोपाल, मध्य प्रदेश"],0,"Dhebar/Jaisamand Lake is in Udaipur district, Rajasthan.","ढेबर/जयसमंद झील राजस्थान के उदयपुर जिले में स्थित है।"],
+["Dams","mcq","Which is India's tallest dam overall (combining all measures)?","कुल मिलाकर भारत का सबसे ऊंचा बांध कौन सा है?",["Hirakud Dam","Bhakra Nangal Dam","Tehri Dam","Rihand Dam"],["हीराकुंड बांध","भाखड़ा नांगल बांध","टिहरी बांध","रिहंद बांध"],2,"Tehri Dam on the Bhagirathi River, Uttarakhand, is India's tallest dam overall.","टिहरी बांध कुल मिलाकर भारत का सबसे ऊंचा बांध है।"],
+["Dams","mcq","Which dam is India's longest dam, situated on the Mahanadi river?","महानदी पर स्थित भारत का सबसे लंबा बांध कौन सा है?",["Hirakud Dam","Tehri Dam","Bhakra Nangal","Sardar Sarovar"],["हीराकुंड बांध","टिहरी बांध","भाखड़ा नांगल","सरदार सरोवर"],0,"Hirakud Dam, Odisha, on the Mahanadi, is India's longest dam.","हीराकुंड बांध, ओडिशा, भारत का सबसे लंबा बांध है।"],
+["Geomorphology","mcq","The Vindhyan rock system is well known for the production of which resource?","विंध्यन चट्टान प्रणाली निम्नलिखित में से किसके उत्पादन के लिए जानी जाती है?",["Manganese","Iron ore and coal","Limestone","Bauxite"],["मैंगनीज","लौह अयस्क और कोयला","चूना पत्थर","बॉक्साइट"],2,"Limestone is a sedimentary rock associated with the Vindhyan rock system.","चूना पत्थर एक अवसादी चट्टान है जो विंध्यन चट्टान प्रणाली से जुड़ी है।"],
+["Geomorphology","mcq","In which kind of geological formation are gorges most developed?","किस प्रकार की भूवैज्ञानिक संरचना में गॉर्ज सबसे अधिक विकसित होते हैं?",["Soft sediment","Hard rocks","Ice cracks","Volcanic ash"],["नरम तलछट","कठोर चट्टानें","हिम दराज़","ज्वालामुखी राख"],1,"Gorges develop best in hard, resistant rocks.","गॉर्ज कठोर, प्रतिरोधी चट्टानों में सबसे अधिक विकसित होते हैं।"],
+["Geomorphology","statement","Consider the following statements:\n1. The youthful stage of a river is dominated by erosional features like gorges and waterfalls.\n2. The mature stage is a transitional period marked by features like meanders.\n3. The old stage is dominated by erosional features like canyons.\nWhich statement(s) above is/are correct?","निम्नलिखित कथनों पर विचार करें:\n1. नदी की युवा अवस्था में गॉर्ज और जलप्रपात जैसी अपरदनात्मक विशेषताओं की प्रधानता होती है।\n2. प्रौढ़ अवस्था एक संक्रमण काल है जिसमें विसर्प जैसी आकृतियाँ बनती हैं।\n3. वृद्धावस्था अपरदनात्मक विशेषताओं जैसे कैन्यन की प्रधानता वाली होती है।\nउपरोक्त में से कौन सा/से कथन सही है/हैं?",["1 and 2 only","2 and 3 only","1 and 3 only","1, 2 and 3"],["केवल 1 और 2","केवल 2 और 3","केवल 1 और 3","1, 2 और 3 सभी"],0,"Old stage is dominated by depositional features like delta, floodplains and oxbow lakes — not erosional.","वृद्धावस्था में डेल्टा, बाढ़ के मैदान जैसी निक्षेपण विशेषताओं की प्रधानता होती है — अपरदनात्मक नहीं।"],
+["Geomorphology","mcq","Which type of waterfall is described as a short-height fall where water descends over a series of rocky steps?","किस प्रकार का जलप्रपात कम ऊंचाई वाला होता है जहां जल चट्टानी सीढ़ियों की एक श्रृंखला से होकर नीचे गिरता है?",["Sopani (Cascade)","Mahaprapaat (Cataract)","Cataract only","Rapids"],["सोपानी (कैस्केड)","महाप्रपात (कैटरैक्ट)","केवल कैटरैक्ट","रैपिड्स"],0,"Sopani (Cascade) is a low-height fall descending over rocky steps.","सोपानी (कैस्केड) कम ऊंचाई वाला झरना है जो चट्टानी सीढ़ियों से होकर नीचे गिरता है।"],
+["Geomorphology","mcq","Which feature is typically bigger, wider, deeper with stepped walls, in contrast to narrower, steeper gorges?","कैन्यन आमतौर पर बड़ा, चौड़ा, गहरा और सीढ़ीदार दीवार वाला होता है, जबकि निम्नलिखित में से अधिक संकरा और ढलानी होता है?",["Canyon","Gorge","Delta","Floodplain"],["कैन्यन","गॉर्ज","डेल्टा","बाढ़ का मैदान"],1,"Gorges are narrower, more steep-sided and enclosed compared to canyons.","गॉर्ज कैन्यन की तुलना में अधिक संकरा और ढलानी होता है।"],
+["Geomorphology","mcq","What causes the development of meanders (visarp) in a river?","नदी में विसर्प का विकास किस कारण से होता है?",["High altitude origin","Sudden tectonic uplift","Lateral erosion on flat terrain","Ocean current effect"],["उच्च ऊंचाई पर उत्पत्ति","अचानक विवर्तनिक उत्थान","समतल भूभाग में पार्श्व अपरदन","महासागरीय धारा का प्रभाव"],2,"Meanders develop due to lateral erosion in flat terrain.","विसर्प का विकास समतल भूभाग में पार्श्व अपरदन के कारण होता है।"],
+["Geomorphology","mcq","Cut bank (erosion on outer bend) and point bar (sand deposition on inner bend) are key features of which river form?","कटाव तट और बिंदु बार किस नदी रूप की प्रमुख विशेषताएं हैं?",["Meandering rivers","Braided rivers","Straight channels","Deltas"],["विसर्पी नदियां","गुंफित नदियां","सीधी नहरें","डेल्टा"],0,"Cut banks and point bars are the hallmark of meandering rivers.","कटाव तट और बिंदु बार विसर्पी नदियों की प्रमुख विशेषताएं हैं।"],
+["Geomorphology","mcq","A braided river system is characterized by what feature?","गुंफित नदी प्रणाली किस विशेषता से पहचानी जाती है?",["A single deep channel","Main flow divided into interwoven channels separated by temporary islands","Absence of sediment","Vertical waterfalls"],["एकल गहरी नहर","मुख्य प्रवाह अस्थायी द्वीपों से अलग हुई गुंथी धाराओं में विभाजित","तलछट की अनुपस्थिति","ऊर्ध्वाधर जलप्रपात"],1,"In a braided river, the main flow divides into interwoven channels separated by temporary islands or sediment bars.","गुंफित नदी में मुख्य प्रवाह अस्थायी द्वीपों से अलग हुई गुंथी धाराओं में विभाजित हो जाता है।"],
+["Karst Topography","mcq","Select the correctly matched cave feature and its formation:","सही सुमेलित गुफा विशेषता और उसके गठन का चयन करें:",["Stalactite - grows from the floor upward","Stalagmite - formed by dripping water from the ceiling","Column - hanging from the ceiling","Stalactite - formed by mineral flow from above"],["स्टैलेक्टाइट - गुफा के तल से ऊपर की ओर बढ़ता है","स्टैलेग्माइट - गुफा की छत से टपकते पानी से निर्मित","स्तंभ - गुफा की छत से लटका हुआ","स्टैलेक्टाइट - ऊपर की ओर खनिज प्रवाह द्वारा निर्मित"],3,"Stalactites are formed by mineral-rich water flow from the ceiling downward.","स्टैलेक्टाइट ऊपर से नीचे खनिज युक्त पानी के प्रवाह द्वारा निर्मित होते हैं।"],
+["Karst Topography","mcq","What is an 'aquifer'?","'जलभृत' (Aquifer) क्या है?",["A store of water between rocks","A type of stalactite","A surface river","A type of sinkhole"],["चट्टानों के बीच स्थित जल का भंडार","एक प्रकार का स्टैलेक्टाइट","एक सतही नदी","एक प्रकार का सिंकहोल"],0,"An aquifer is a store of water found between rocks.","जलभृत चट्टानों के बीच स्थित जल का भंडार है।"],
+["Karst Topography","mcq","Karst topography is mainly related to groundwater action on which type of rock?","कार्स्ट स्थलाकृति मुख्य रूप से किस प्रकार की चट्टान पर भूजल की क्रिया से संबंधित है?",["Granite and basalt","Limestone and chalk","Sandstone only","Igneous rocks"],["ग्रेनाइट और बेसाल्ट","चूना पत्थर और चाक","केवल बलुआ पत्थर","आग्नेय चट्टानें"],1,"Karst topography is related to groundwater action on limestone and chalk formations.","कार्स्ट स्थलाकृति चूना पत्थर और चाक संरचनाओं पर भूजल की क्रिया से संबंधित है।"],
+["Karst Topography","mcq","Which of the following is an erosional (not depositional) karst feature?","निम्नलिखित में से कौन सा एक अपरदनात्मक कार्स्ट विशेषता है?",["Stalactite","Column","Sinkhole","Stalagmite"],["स्टैलेक्टाइट","स्तंभ","सिंकहोल (घोल रंध्र)","स्टैलेग्माइट"],2,"Sinkholes, dolines, lapiez, uvala, and swallow holes are erosional karst features.","सिंकहोल, डोलाइन, लैपीज़, उवाला अपरदनात्मक कार्स्ट विशेषताएं हैं।"],
+["Karst Topography","mcq","Lichens are considered a natural indicator because of their sensitivity to which factor?","लाइकेन को प्राकृतिक सूचक माना जाता है क्योंकि वे किस कारक के प्रति संवेदनशील होते हैं?",["Soil pH only","Atmospheric conditions/air pollution","Water salinity","Temperature only"],["केवल मिट्टी का pH","वायुमंडलीय परिस्थितियां/वायु प्रदूषण","जल की लवणता","केवल तापमान"],1,"Lichens are highly sensitive to atmospheric conditions and are used as an indicator of air pollution.","लाइकेन वायुमंडलीय परिस्थितियों के प्रति अत्यंत संवेदनशील होते हैं।"],
+["Karst Topography","mcq","Litmus paper is made from which organism, and what is its natural dye color?","लिटमस पेपर किस जीव से बनता है, और इसका प्राकृतिक डाई रंग क्या है?",["Fungus; blue dye","Lichen; purple dye","Algae; green dye","Moss; red dye"],["कवक; नीला डाई","लाइकेन; पर्पल डाई","शैवाल; हरा डाई","काई; लाल डाई"],1,"Litmus paper is made from lichen (a thallophyte), giving a purple dye.","लिटमस पेपर लाइकेन से बनता है, जो पर्पल डाई देता है।"],
+["Seismic Waves","mcq","Which seismic waves are the fastest and travel through solid, liquid, and gas?","कौन सी भूकंपीय तरंगें सबसे तेज़ हैं और ठोस, द्रव और गैस से गुजरती हैं?",["P waves","S waves","Surface waves","Love waves only"],["P तरंगें","S तरंगें","सतही तरंगें","केवल लव तरंगें"],0,"P (Primary) waves are the fastest, travel through solid/liquid/gas, and are recorded first.","P तरंगें सबसे तेज होती हैं और सबसे पहले दर्ज होती हैं।"],
+["Seismic Waves","mcq","S waves (secondary waves) cannot travel through which medium?","S तरंगें किस माध्यम से नहीं गुजर सकतीं?",["Solid","Liquid","Both solid and liquid","Gas only"],["ठोस","द्रव","ठोस और द्रव दोनों","केवल गैस"],1,"S waves only travel through solids, not through liquids.","S तरंगें केवल ठोस से गुजरती हैं, द्रव से नहीं।"],
+["Seismic Waves","mcq","Which type of seismic wave is the slowest but causes the most destruction?","किस प्रकार की भूकंपीय तरंग सबसे धीमी होती है लेकिन सबसे अधिक विनाश करती है?",["P waves","S waves","Surface waves","None of the above"],["P तरंगें","S तरंगें","सतही तरंगें","इनमें से कोई नहीं"],2,"Surface waves (Love and Rayleigh) are slowest but most destructive.","सतही तरंगें सबसे धीमी लेकिन सबसे विनाशकारी होती हैं।"],
+["Seismic Waves","statement","Consider the following statements about seismic waves:\n1. P waves are longitudinal and oscillate in the direction of wave travel.\n2. S waves are transverse and oscillate perpendicular to the direction of wave travel.\nWhich of the above is/are correct?","भूकंपीय तरंगों के बारे में निम्नलिखित कथनों पर विचार करें:\n1. P तरंगें अनुदैर्ध्य होती हैं और तरंग की दिशा में दोलन करती हैं।\n2. S तरंगें अनुप्रस्थ होती हैं और तरंग की दिशा के लंबवत दोलन करती हैं।\nउपरोक्त में से कौन सा/से सही है/हैं?",["1 only","2 only","Both 1 and 2","Neither 1 nor 2"],["केवल 1","केवल 2","1 और 2 दोनों","न तो 1 और न ही 2"],2,"Both statements correctly describe P and S wave motion.","दोनों कथन P और S तरंगों की गति का सही वर्णन करते हैं।"],
+["Seismic Waves","mcq","Body waves (Bhukampiya tarangein) are broadly classified into which two types?","भूकंपीय तरंगें मुख्यतः किन दो प्रकारों में वर्गीकृत हैं?",["P waves and Surface waves","Body waves and Surface waves","Love waves and Rayleigh waves","Solid waves and Liquid waves"],["P तरंगें और सतही तरंगें","भूगर्भीय तरंगें और धरातलीय तरंगें","लव तरंगें और रेले तरंगें","ठोस तरंगें और द्रव तरंगें"],1,"Earthquake waves are classified as body waves and surface waves.","भूकंप की तरंगें भूगर्भीय तरंगें और धरातलीय तरंगें में वर्गीकृत हैं।"],
+["Seismic Waves","mcq","Which surface wave type is horizontal in motion?","किस प्रकार की सतही तरंग क्षैतिज गति करती है?",["Love wave","Rayleigh wave","P wave","S wave"],["लव तरंग","रेले तरंग","P तरंग","S तरंग"],0,"Love waves move horizontally; Rayleigh waves move in a rolling/undulating manner.","लव तरंगें क्षैतिज गति करती हैं।"],
+["Landslides","mcq","In which type of landslide does the sliding material rotate backward?","निम्नलिखित में से किस प्रकार के भूस्खलन में फिसलने वाली सामग्री का पीछे की ओर घूमना शामिल होता है?",["Rock slide","Rock fall","Slump","Debris fall"],["चट्टान खिसकना","चट्टान गिरना","स्लम्प","मलबा गिरना"],2,"A slump involves the sliding material rotating backward along a curved surface.","स्लम्प में फिसलने वाली सामग्री एक घुमावदार सतह पर पीछे की ओर घूमती है।"],
+["Landslides","statement","Consider the following statements about mass movement:\n1. Rapid movement includes earth flow, mudflow, and landslides/avalanches, usually occurring in water-saturated soil lacking vegetation.\n2. Slow movement includes creep and solifluction, common in temperate, moisture-saturated regions.\nWhich of the above is/are correct?","वृहत संचलन के बारे में निम्नलिखित कथनों पर विचार करें:\n1. तीव्र संचलन में अर्थ फ्लो, कीचड़ प्रवाह, और भूस्खलन/हिमस्खलन शामिल हैं।\n2. मंद संचलन में क्रीप और सॉलिफ्लक्शन शामिल हैं।\nउपरोक्त में से कौन सा/से सही है/हैं?",["1 only","2 only","Both 1 and 2","Neither 1 nor 2"],["केवल 1","केवल 2","1 और 2 दोनों","न तो 1 और न ही 2"],2,"Both statements correctly describe rapid and slow mass movement categories.","दोनों कथन तीव्र और मंद संचलन श्रेणियों का सही वर्णन करते हैं।"],
+["Landslides","mcq","'Creep' is a type of which kind of mass movement?","'क्रीप' किस प्रकार के वृहत संचलन का एक प्रकार है?",["Rapid movement","Slow movement","Instant movement","Volcanic movement"],["तीव्र संचलन","मंद संचलन","तात्कालिक संचलन","ज्वालामुखीय संचलन"],1,"Creep, an extremely slow downslope movement, falls under slow mass movement.","क्रीप मंद संचलन के अंतर्गत आती है।"],
+["Landslides","mcq","'Solifluction' commonly occurs in which type of region?","'सॉलिफ्लक्शन' सामान्यतः किस प्रकार के क्षेत्र में होता है?",["Desert regions","Temperate, moisture-saturated regions","Polar ice caps only","Tropical rainforests"],["रेगिस्तानी क्षेत्र","समशीतोष्ण, नमी से संतृप्त क्षेत्र","केवल ध्रुवीय बर्फ की टोपियां","उष्णकटिबंधीय वर्षावन"],1,"Solifluction is common in temperate, moisture-saturated regions.","सॉलिफ्लक्शन समशीतोष्ण, नमी से संतृप्त क्षेत्रों में आम है।"],
+["Landslides","mcq","Debris flow, mudflow and landslides/avalanches fall under which category of mass movement?","मलबा प्रवाह, कीचड़ प्रवाह और भूस्खलन किस श्रेणी में आते हैं?",["Rapid movement","Slow movement","Static movement","Tectonic movement"],["तीव्र संचलन","मंद संचलन","स्थिर संचलन","विवर्तनिक संचलन"],0,"These are all rapid mass movement types.","ये सभी तीव्र वृहत संचलन के प्रकार हैं।"],
+["Landslides","mcq","Rapid mass movement typically occurs in soil that is:","तीव्र वृहत संचलन आमतौर पर किस प्रकार की मिट्टी में होता है?",["Dry and vegetated","Water-saturated and lacking vegetation","Frozen and rocky","Sandy desert soil"],["शुष्क और वनस्पति युक्त","पानी से संतृप्त और वनस्पति रहित","जमी हुई और चट्टानी","रेतीली रेगिस्तानी मिट्टी"],1,"Rapid movements usually occur in water-saturated soil lacking vegetation.","तीव्र संचलन आमतौर पर पानी से संतृप्त और वनस्पति रहित मिट्टी में होते हैं।"],
+["Rivers","mcq","Lohit river is a tributary of which major Himalayan river?","लोहित नदी निम्नलिखित में से किस प्रमुख हिमालयी नदी की सहायक नदी है?",["Ganga","Brahmaputra","Indus","Yamuna"],["गंगा","ब्रह्मपुत्र","सिंधु","यमुना"],1,"Lohit is a left-bank tributary of the Brahmaputra.","लोहित ब्रह्मपुत्र की बाएं तट की सहायक नदी है।"],
+["Rivers","mcq","Majuli, the world's largest river island, lies on which river?","माजुली, विश्व का सबसे बड़ा नदी द्वीप, किस नदी पर स्थित है?",["Ganga","Brahmaputra","Godavari","Indus"],["गंगा","ब्रह्मपुत्र","गोदावरी","सिंधु"],1,"Majuli is located on the Brahmaputra river, Assam.","माजुली असम में ब्रह्मपुत्र नदी पर स्थित है।"],
+["Rivers","mcq","Bhupen Hazarika, honored with Bharat Ratna in 2019, was popularly known as the 'child of Brahmaputra' and by which other title?","भूपेन हजारिका 'ब्रह्मपुत्र के चारण' और किस अन्य नाम से जाने जाते हैं?",["Sudhakanth","Swar Kokila","Sur Samrat","Kavi Guru"],["सुधाकंठ","स्वर कोकिला","सुर सम्राट","कवि गुरु"],0,"Bhupen Hazarika is known as 'Brahmaputra ke Charan' and 'Sudhakanth'.","भूपेन हजारिका को 'सुधाकंठ' के रूप में जाना जाता है।"],
+["Rivers","statement","Which of the given Doab pairings is INCORRECT?\n1. Bari Doab lies between Beas and Ravi rivers.\n2. Bisht Doab lies between Beas and Chenab rivers.\n3. Rachna Doab lies between Ravi and Chenab rivers.\n4. Chaj Doab lies between Chenab and Jhelum rivers.","दिए गए युग्मों में से कौन-सा युग्म सही सुमेलित नहीं है?\n1. बारी दोआब - ब्यास और रावी के बीच\n2. बिष्ट दोआब - ब्यास और चिनाब के बीच\n3. रचना दोआब - रावी और चिनाब के बीच\n4. चज दोआब - चिनाब और झेलम के बीच",["Statement 1","Statement 2","Statement 3","Statement 4"],["कथन 1","कथन 2","कथन 3","कथन 4"],1,"Bist Doab actually lies between Sutlej and Beas rivers, not Beas and Chenab.","बिस्त दोआब वास्तव में सतलज और ब्यास नदियों के बीच है।"],
+["Rivers","mcq","Which five rivers together are called 'Panchnad'?","किन पांच नदियों को सम्मिलित रूप से 'पंचनद' कहा जाता है?",["Ganga, Yamuna, Indus, Chenab, Ravi","Jhelum, Chenab, Ravi, Beas, Sutlej","Indus, Jhelum, Ganga, Yamuna, Sutlej","Beas, Ravi, Chenab, Yamuna, Ganga"],["गंगा, यमुना, सिंधु, चिनाब, रावी","झेलम, चिनाब, रावी, ब्यास, सतलज","सिंधु, झेलम, गंगा, यमुना, सतलज","ब्यास, रावी, चिनाब, यमुना, गंगा"],1,"Jhelum, Chenab, Ravi, Beas, Sutlej together are called Panchnad.","झेलम, चिनाब, रावी, ब्यास, सतलज को पंचनद कहा जाता है।"],
+["Rivers","mcq","India's longest canal, Indira Gandhi Canal, stretches from Harike barrage to which region?","भारत की सबसे लंबी नहर, इंदिरा गांधी नहर, हरिके बैराज से किस क्षेत्र तक फैली हुई है?",["Thar desert, Rajasthan","Rann of Kutch, Gujarat","Aravalli hills","Sunderbans, WB"],["थार मरुस्थल, राजस्थान","कच्छ का रण, गुजरात","अरावली पहाड़ियां","सुंदरबन, प. बंगाल"],0,"The Indira Gandhi Canal stretches about 837 km to the Thar desert in Rajasthan.","इंदिरा गांधी नहर राजस्थान के थार मरुस्थल तक लगभग 837 किमी फैली हुई है।"],
+["Coral Reefs & Climate","mcq","Coral bleaching in the Indian Ocean is most directly linked to which of the following?","'प्रवाल विरंजन' की प्रक्रिया सबसे सीधे तौर पर निम्नलिखित से जुड़ी हुई है?",["Human-induced sea surface temperature rise","Deep sea mining increase","River outflow raising ocean acidification","Increased Arctic ice melting effects"],["मानवजनित प्रेरित समुद्री सतह का तापमान बढ़ता है","गहरे समुद्र में खनन में वृद्धि","नदी अपवाह से महासागरीय अम्लीकरण का स्तर बढ़ गया","आर्कटिक बर्फ पिघलने के बढ़ते प्रभाव"],0,"Coral bleaching is most directly linked to human-induced rising sea surface temperatures.","प्रवाल विरंजन मानवजनित समुद्री सतह के बढ़ते तापमान से जुड़ा है।"],
+["Coral Reefs & Climate","mcq","Corals share a symbiotic relationship with which organism, giving reefs the name 'rainforest of the sea'?","मूंगे किस जीव के साथ सहजीवी संबंध साझा करते हैं?",["Plankton","Zooxanthellae algae","Bacteria","Jellyfish"],["प्लवक","जूजैंथेले शैवाल","बैक्टीरिया","जेलीफ़िश"],1,"Corals share a symbiotic relationship with zooxanthellae algae.","मूंगे जूजैंथेले शैवाल के साथ सहजीवी संबंध साझा करते हैं।"],
+["Coral Reefs & Climate","mcq","What is a 'guyot'?","'गयोट' क्या है?",["A flat-topped seamount","A type of coral reef","A tidal wave","A deep ocean trench"],["सपाट शिखर वाला समुद्री पर्वत","एक प्रकार की प्रवाल भित्ति","एक ज्वारीय तरंग","एक गहरी समुद्री खाई"],0,"A guyot is a flat-topped seamount.","गयोट सपाट शिखर वाला समुद्री पर्वत होता है।"],
+["Coral Reefs & Climate","statement","Consider the following about Earth's major climate zones:\n1. Tropical regions have minimum seasonal temperature variation.\n2. Temperate regions have four distinct seasons.\nWhich of the above is/are correct?","पृथ्वी के प्रमुख जलवायु क्षेत्रों के संबंध में:\n1. उष्णकटिबंधीय क्षेत्रों में न्यूनतम मौसमी तापमान परिवर्तन होता है।\n2. समशीतोष्ण क्षेत्रों की विशेषता चार अलग-अलग ऋतुएँ हैं।\nउपरोक्त में से कौन सा/से सही है/हैं?",["1 only","2 only","Both 1 and 2","Neither 1 nor 2"],["केवल कथन 1","केवल कथन 2","1 और 2 दोनों","न तो 1 और न ही 2"],2,"Both statements are correct regarding tropical and temperate climate zones.","उष्णकटिबंधीय और समशीतोष्ण जलवायु क्षेत्रों के बारे में दोनों कथन सही हैं।"],
+["Coral Reefs & Climate","mcq","The 'Frigid zone' (cold belt) lies near which latitude circles?","'शीत कटिबंध' किन अक्षांश वृत्तों के निकट स्थित है?",["Tropic of Cancer and Capricorn","Arctic and Antarctic circles","Equator","Prime Meridian"],["कर्क और मकर रेखा","आर्कटिक और अंटार्कटिक वृत्त","भूमध्य रेखा","प्रधान मध्याह्न रेखा"],1,"The frigid/cold zones lie near the Arctic and Antarctic circles.","शीत कटिबंध आर्कटिक और अंटार्कटिक वृत्त के निकट स्थित हैं।"],
+["Coral Reefs & Climate","mcq","Due to Earth's axial tilt (~23.5 degrees), polar regions experience continuous daylight and continuous night for approximately how long?","ध्रुवीय क्षेत्रों में लगातार दिन और लगातार रात लगभग कितने समय तक रहते हैं?",["3 months each","6 months each","1 month each","12 months each"],["प्रत्येक 3 महीने","प्रत्येक 6 महीने","प्रत्येक 1 महीना","प्रत्येक 12 महीने"],1,"Polar regions experience about 6 months of continuous day and 6 months of continuous night.","ध्रुवीय क्षेत्रों में लगभग 6 महीने तक लगातार दिन और 6 महीने तक लगातार रात रहती है।"],
+["Thermal Power & Coal","mcq","In which state is the Talcher Thermal Power Station located?","भारत में स्थित ताप विद्युत स्टेशन तालचेर किस राज्य में स्थित है?",["Jharkhand","Tamil Nadu","Andhra Pradesh","Odisha"],["झारखंड","तमिलनाडु","आंध्र प्रदेश","ओडिशा"],3,"Talcher Thermal Power Station is located in Odisha.","तालचेर ताप विद्युत स्टेशन ओडिशा में स्थित है।"],
+["Thermal Power & Coal","mcq","India's biggest thermal power plant, Vindhyachal, is located in which state?","भारत का सबसे बड़ा ताप विद्युत संयंत्र विंध्याचल किस राज्य में स्थित है?",["Madhya Pradesh (Singrauli)","Gujarat","Maharashtra","Odisha"],["मध्य प्रदेश (सिंगरौली)","गुजरात","महाराष्ट्र","ओडिशा"],0,"Vindhyachal Thermal Power Station is in Singrauli, Madhya Pradesh, and is India's biggest.","विंध्याचल ताप विद्युत संयंत्र सिंगरौली, मध्य प्रदेश में है।"],
+["Thermal Power & Coal","mcq","Which of the following is India's second biggest thermal power plant?","निम्नलिखित में से भारत का दूसरा सबसे बड़ा ताप विद्युत संयंत्र कौन सा है?",["Sasan","Tiroda","Mundra","Kota Super"],["सासन","तिरोडा","मुंद्रा","कोटा सुपर"],2,"Mundra Thermal Power Station, Gujarat, is India's second biggest.","मुंद्रा ताप विद्युत संयंत्र, गुजरात, भारत का दूसरा सबसे बड़ा है।"],
+["Thermal Power & Coal","mcq","Indian coal is mainly of which origin?","भारतीय कोयला मुख्य रूप से किस मूल का है?",["Gondwana and Tertiary origin","Jurassic origin only","Cretaceous origin only","Permian origin only"],["गोंडवाना और तृतीयक मूल","केवल जुरासिक मूल","केवल क्रीटेशियस मूल","केवल पर्मियन मूल"],0,"Indian coal is mainly of Gondwana and Tertiary origin.","भारतीय कोयला मुख्य रूप से गोंडवाना और तृतीयक मूल का है।"],
+["Thermal Power & Coal","mcq","Which category of coal is the highest quality (Uchhatam shreni)?","कोयले की कौन सी श्रेणी सबसे उच्च गुणवत्ता की होती है?",["Anthracite","Bituminous","Lignite","Peat"],["एंथ्रेसाइट","बिटुमिनस","लिग्नाइट","पीट"],0,"Anthracite is the highest quality of coal.","एंथ्रेसाइट कोयले की उच्चतम श्रेणी है।"],
+["Thermal Power & Coal","mcq","Which of the following is India's lowest quality coal category (with lowest carbon content)?","निम्नलिखित में से कौन सी भारत की सबसे निम्न गुणवत्ता की कोयला श्रेणी है?",["Anthracite","Bituminous","Peat","Lignite"],["एंथ्रेसाइट","बिटुमिनस","पीट","लिग्नाइट"],2,"Peat is the lowest quality/rank coal, having the lowest carbon content.","पीट सबसे निम्न गुणवत्ता का कोयला है।"],
+["Maritime Routes & Oceans","mcq","Which important trade route passes through the Indian Ocean?","इनमें से कौन सा महत्वपूर्ण व्यापार मार्ग हिंद महासागर से होकर गुजरता है?",["Panama Canal","Suez Canal","Bering Strait","Drake Passage"],["पनामा नहर","स्वेज नहर","बेरिंग स्ट्रेट","ड्रेक पैसेज"],1,"The Suez Canal route connects to the Indian Ocean via the Red Sea.","स्वेज नहर मार्ग लाल सागर के माध्यम से हिंद महासागर से जुड़ता है।"],
+["Maritime Routes & Oceans","mcq","The Panama Canal connects which two oceans?","पनामा नहर किन दो महासागरों को जोड़ती है?",["Indian and Pacific","Atlantic and Pacific","Arctic and Atlantic","Southern and Indian"],["हिंद और प्रशांत","अटलांटिक और प्रशांत","आर्कटिक और अटलांटिक","दक्षिणी और हिंद"],1,"The Panama Canal connects the Atlantic and Pacific Oceans.","पनामा नहर अटलांटिक और प्रशांत महासागर को जोड़ती है।"],
+["Maritime Routes & Oceans","mcq","Which is the largest and deepest ocean?","सबसे बड़ा और सबसे गहरा महासागर कौन सा है?",["Atlantic Ocean","Indian Ocean","Pacific Ocean","Arctic Ocean"],["अटलांटिक महासागर","हिंद महासागर","प्रशांत महासागर","आर्कटिक महासागर"],2,"The Pacific Ocean is the largest and deepest.","प्रशांत महासागर सबसे बड़ा और सबसे गहरा है।"],
+["Maritime Routes & Oceans","mcq","Which strait lies between the Persian Gulf and the Gulf of Oman, between Iran and Oman/UAE?","फारस की खाड़ी और ओमान की खाड़ी के बीच कौन सी जलसंधि स्थित है?",["Strait of Malacca","Strait of Hormuz","Bab-el-Mandeb Strait","Bering Strait"],["मलक्का जलसंधि","हॉर्मुज़ जलसंधि","बाब अल-मन्देब जलसंधि","बेरिंग जलसंधि"],1,"The Strait of Hormuz lies between the Persian Gulf and Gulf of Oman.","हॉर्मुज़ जलसंधि फारस की खाड़ी और ओमान की खाड़ी के बीच स्थित है।"],
+["Maritime Routes & Oceans","mcq","Which strait, called 'Gateway of Tears', connects the Red Sea to the Gulf of Aden and then the Arabian Sea?","'आँसुओं का द्वार' कहलाने वाली कौन सी जलसंधि लाल सागर को अदन की खाड़ी से जोड़ती है?",["Strait of Gibraltar","Bab-el-Mandeb Strait","Strait of Malacca","Kerch Strait"],["जिब्राल्टर जलसंधि","बाब अल-मन्देब जलसंधि","मलक्का जलसंधि","कर्च जलडमरूमध्य"],1,"Bab-el-Mandeb Strait, between Yemen and Djibouti/Eritrea, is called the Gateway of Tears.","बाब अल-मन्देब जलसंधि आँसुओं का द्वार कहलाती है।"],
+["Maritime Routes & Oceans","mcq","Which passage, located between South America and Antarctica, is considered the world's toughest sea route?","दक्षिण अमेरिका और अंटार्कटिका के बीच स्थित कौन सा मार्ग दुनिया का सबसे कठिन समुद्री मार्ग माना जाता है?",["Bering Strait","Drake Passage","Strait of Malacca","Strait of Gibraltar"],["बेरिंग जलसंधि","ड्रेक जलडमरूमध्य","मलक्का जलसंधि","जिब्राल्टर जलसंधि"],1,"The Drake Passage is considered the world's toughest maritime route.","ड्रेक जलडमरूमध्य को दुनिया का सबसे कठिन समुद्री मार्ग माना जाता है।"],
+["Koppen Climate & Biomes","mcq","In which region of India is 'BWhw' type climate found?","भारत के किस क्षेत्र में 'BWhw' प्रकार की जलवायु पाई जाती है?",["Punjab","Madhya Pradesh","Gujarat","Rajasthan"],["पंजाब","मध्य प्रदेश","गुजरात","राजस्थान"],3,"BWhw (hot desert climate) is found in Rajasthan.","BWhw (गर्म रेगिस्तानी जलवायु) राजस्थान में पाई जाती है।"],
+["Koppen Climate & Biomes","mcq","Who is the founder of the Koppen climate classification system?","कोपेन जलवायु वर्गीकरण प्रणाली के प्रस्तुतकर्ता कौन हैं?",["Wladimir Koppen (1884), German climatologist","Alfred Wegener","Arthur Strahler","Charles Darwin"],["व्लादिमीर कोपेन (1884), जर्मन जलवायुविज्ञानी","अल्फ्रेड वेगनर","आर्थर स्ट्रालर","चार्ल्स डार्विन"],0,"Wladimir Koppen, a German climatologist, proposed this system in 1884.","व्लादिमीर कोपेन ने 1884 में इस प्रणाली को प्रस्तुत किया।"],
+["Koppen Climate & Biomes","statement","Consider the following statements about Koppen climate groups:\n1. Group A (Tropical) has coldest month average temperature of 18°C or above.\n2. Group E (Polar) has all months' average temperature below 10°C.\nWhich of the above is/are correct?","कोपेन जलवायु समूहों के बारे में निम्नलिखित कथनों पर विचार करें:\n1. समूह A (उष्णकटिबंधीय) का सबसे ठंडे महीने का औसत तापमान 18°C या उससे अधिक होता है।\n2. समूह E (ध्रुवीय प्रकार) के सभी महीनों का औसत तापमान 10°C से नीचे रहता है।\nउपरोक्त में से कौन सा/से सही है/हैं?",["1 only","2 only","Both 1 and 2","Neither 1 nor 2"],["केवल 1","केवल 2","1 और 2 दोनों","न तो 1 और न ही 2"],2,"Both statements correctly describe Koppen's Group A and Group E climate criteria.","दोनों कथन कोपेन के समूह A और समूह E जलवायु मानदंडों का सही वर्णन करते हैं।"],
+["Koppen Climate & Biomes","mcq","In Koppen's symbols, what does the letter 'S' denote?","कोपेन के प्रतीकों में अक्षर 'S' क्या दर्शाता है?",["Steppe (grasslands of Europe and Asia)","Savanna","Snow","Subtropical"],["स्टेपी (यूरोप और एशिया में घास के मैदान)","सवाना","बर्फ","उपोष्णकटिबंधीय"],0,"'S' denotes Steppe climate, the grasslands of Europe and Asia.","'S' स्टेपी जलवायु दर्शाता है।"],
+["Koppen Climate & Biomes","mcq","Which biome is characterized by conifer trees like spruce, fir, and pine, located just below the tundra?","टुंड्रा के ठीक नीचे स्थित, शंकुधारी वृक्षों की विशेषता वाला बायोम कौन सा है?",["Taiga","Tundra","Savanna","Steppe"],["टैगा","टुंड्रा","सवाना","स्टेपी"],0,"The Taiga, located below the tundra, has coniferous trees like spruce, fir, and pine.","टैगा में स्प्रूस, फ़र, पाइन जैसे शंकुधारी वृक्ष होते हैं।"],
+["Koppen Climate & Biomes","mcq","Tundra climate is found in which regions and vegetation is limited to what?","टुंड्रा जलवायु किन क्षेत्रों में पाई जाती है और वनस्पति किन तक सीमित होती है?",["Polar regions; moss, lichen, grass, small shrubs","Tropical regions; tall trees","Desert regions; cacti","Temperate regions; deciduous forest"],["ध्रुवीय क्षेत्र; काई, लाइकेन, घास, छोटी झाड़ियां","उष्णकटिबंधीय क्षेत्र; ऊंचे वृक्ष","रेगिस्तानी क्षेत्र; कैक्टस","समशीतोष्ण क्षेत्र; पर्णपाती वन"],0,"Tundra vegetation is limited to moss, lichen, grass and small shrubs; trees do not grow.","टुंड्रा वनस्पति काई, लाइकेन, घास और छोटी झाड़ियों तक सीमित है।"],
+["Minerals","mcq","Which state is a major contributor to India's iron ore reserves?","निम्नलिखित में से कौन सा राज्य भारत के लौह अयस्क भंडार में प्रमुख योगदानकर्ता है?",["Maharashtra","Andhra Pradesh","Karnataka","Tamil Nadu"],["महाराष्ट्र","आंध्र प्रदेश","कर्नाटक","तमिलनाडु"],2,"Karnataka holds over 72% of India's magnetite reserves.","कर्नाटक में भारत के मैग्नेटाइट भंडार का 72% से अधिक है।"],
+["Minerals","mcq","Which iron ore variety has the highest quality, with iron content up to ~70%?","किस लौह अयस्क किस्म की गुणवत्ता सबसे उत्तम है, जिसमें लौह की मात्रा लगभग 70% तक होती है?",["Hematite","Magnetite","Limonite","Siderite"],["हेमेटाइट","मैग्नेटाइट","लिमोनाइट","साइडेराइट"],1,"Magnetite is the highest quality iron ore with iron content up to about 70%.","मैग्नेटाइट उत्तम गुणवत्ता का लौह अयस्क है।"],
+["Minerals","mcq","Which state has the highest reserves of iron ore in India?","भारत में लौह अयस्क का सर्वाधिक भंडार किस राज्य में है?",["Chhattisgarh","Karnataka","Odisha","Jharkhand"],["छत्तीसगढ़","कर्नाटक","ओडिशा","झारखंड"],2,"Odisha has India's highest reserves of iron ore.","ओडिशा में भारत का सर्वाधिक लौह अयस्क भंडार है।"],
+["Minerals","mcq","Which district-state pair regarding India's iron ore reserves is correctly matched?","भारत में लौह अयस्क भंडार के संबंध में कौन सा जिला-राज्य संयोजन सही ढंग से सुमेलित है?",["Singhbhum - Jharkhand","Mayurbhanj - Uttar Pradesh","Sundargarh - Meghalaya","Keonjhar - Rajasthan"],["सिंहभूम - झारखंड","मयूरभंज - उत्तर प्रदेश","सुंदरगढ़ - मेघालय","क्योंझर - राजस्थान"],0,"Singhbhum (Noamundi and Gua) is correctly in Jharkhand.","सिंहभूम (नोआमुंडी और गुआ) सही रूप से झारखंड में स्थित है।"],
+["Minerals","mcq","Which is India's iron-ore-rich belt covering Odisha and Jharkhand, including Sundargarh and Mayurbhanj?","सुंदरगढ़ और मयूरभंज सहित ओडिशा और झारखंड को कवर करने वाला भारत का लौह अयस्क समृद्ध बेल्ट कौन सा है?",["Odisha-Jharkhand Belt","Durg-Bastar-Chandrapur Belt","Maharashtra-Goa Belt","Bellary-Chitradurga Belt"],["ओडिशा-झारखंड पट्टी","दुर्ग-बस्तर-चंद्रपुर पट्टी","महाराष्ट्र-गोवा पट्टी","बेल्लारी-चित्रदुर्ग पट्टी"],0,"The Odisha-Jharkhand belt includes Singhbhum, Sundargarh, Mayurbhanj, and Badampahar mines.","ओडिशा-झारखंड पट्टी में सिंहभूम, सुंदरगढ़, मयूरभंज शामिल हैं।"],
+["Minerals","statement","Assertion (A): Aluminium smelting is the most important metallurgical industry in India.\nReason (R): Aluminium is used in making aircraft, wires, and utensils.\nChoose the correct option:","अभिकथन (A): एल्युमिनियम प्रगलन भारत में सबसे महत्वपूर्ण धातुकर्म उद्योग है।\nकारण (R): एल्युमिनियम का उपयोग विमान, तार और बर्तन बनाने में किया जाता है।\nसही विकल्प चुनें:",["Both A and R are true, and R is the correct explanation of A","Both A and R are true, but R is not the correct explanation of A","A is true, but R is false","A is false, but R is true"],["A और R दोनों सत्य हैं, और R, A की सही व्याख्या है","A और R दोनों सत्य हैं, लेकिन R, A की सही व्याख्या नहीं है","A सत्य है, लेकिन R असत्य है","A असत्य है, लेकिन R सत्य है"],3,"Iron & Steel, not Aluminium, is India's most important metallurgical industry — so A is false, but R is true.","लौह-इस्पात भारत का सबसे महत्वपूर्ण धातुकर्म उद्योग है — इसलिए A असत्य है, लेकिन R सत्य है।"],
+["BRICS","mcq","Which BRICS country has the longest coastline?","किस ब्रिक्स देश की तटरेखा सबसे लंबी है?",["Russia","Brazil","China","South Africa"],["रूस","ब्राज़िल","चीन","दक्षिण अफ्रीका"],0,"Russia has the longest coastline among BRICS nations.","ब्रिक्स देशों में रूस की तटरेखा सबसे लंबी है।"],
+["BRICS","mcq","When was BRICS initially formed, and when did South Africa join?","ब्रिक्स की स्थापना शुरुआत में कब हुई थी, और दक्षिण अफ्रीका कब शामिल हुआ?",["Formed 2006, South Africa joined 2010","Formed 2001, South Africa joined 2005","Formed 2010, South Africa joined 2014","Formed 1999, South Africa joined 2006"],["2006 में गठित, 2010 में शामिल हुआ","2001 में गठित, 2005 में शामिल हुआ","2010 में गठित, 2014 में शामिल हुआ","1999 में गठित, 2006 में शामिल हुआ"],0,"BRICS was formed in 2006, and South Africa joined in 2010.","ब्रिक्स का गठन 2006 में हुआ था, और दक्षिण अफ्रीका 2010 में शामिल हुआ।"],
+["BRICS","mcq","Where is the headquarters of BRICS' New Development Bank (NDB)?","ब्रिक्स के न्यू डेवलपमेंट बैंक (NDB) का मुख्यालय कहां है?",["Shanghai, China","New Delhi, India","Moscow, Russia","Johannesburg, South Africa"],["शंघाई, चीन","नई दिल्ली, भारत","मॉस्को, रूस","जोहान्सबर्ग, दक्षिण अफ्रीका"],0,"NDB's headquarters is in Shanghai, China.","NDB का मुख्यालय शंघाई, चीन में है।"],
+["BRICS","mcq","The Fortaleza Agreement (2014) established the NDB with what initial capital?","फोर्टालेज़ा समझौते (2014) ने NDB की स्थापना कितनी प्रारंभिक पूंजी के साथ की?",["$50 billion","$100 billion","$25 billion","$10 billion"],["$50 बिलियन","$100 बिलियन","$25 बिलियन","$10 बिलियन"],0,"The Fortaleza Agreement established NDB with $50 billion initial capital.","फोर्टालेज़ा समझौते ने NDB की स्थापना $50 बिलियन की प्रारंभिक पूंजी के साथ की।"],
+["Solar System","mcq","Which is the hottest planet in the solar system?","सौरमंडल का सबसे गर्म ग्रह कौन सा है?",["Mercury","Venus","Mars","Jupiter"],["बुध","शुक्र","मंगल","बृहस्पति"],1,"Venus, due to its thick CO2 atmosphere causing a strong greenhouse effect, is the hottest planet.","शुक्र अपने घने CO2 वायुमंडल के कारण सबसे गर्म ग्रह है।"],
+["Solar System","mcq","Which planet is the largest and fastest-rotating in the solar system, with 97 moons?","सौरमंडल का सबसे बड़ा और सबसे तेज़ घूर्णन वाला ग्रह कौन सा है, जिसके 97 चंद्रमा हैं?",["Saturn","Jupiter","Neptune","Uranus"],["शनि","बृहस्पति","वरुण","अरुण"],1,"Jupiter is the largest and fastest-rotating planet with 97 known moons.","बृहस्पति सबसे बड़ा और सबसे तेज़ घूर्णन वाला ग्रह है।"],
+["Solar System","mcq","Which planet has the shortest orbit around the sun (88 Earth days)?","किस ग्रह की सूर्य के चारों ओर सबसे छोटी परिक्रमा अवधि (88 पृथ्वी दिन) है?",["Mercury","Venus","Mars","Earth"],["बुध","शुक्र","मंगल","पृथ्वी"],0,"Mercury has the shortest orbital period of 88 Earth days.","बुध की सबसे छोटी परिक्रमा अवधि 88 पृथ्वी दिन है।"],
+["Solar System","mcq","Which planet is coldest and, in 2006, saw Pluto demoted to a dwarf planet status by the same defining body?","कौन सा ग्रह सबसे ठंडा है और 2006 में प्लूटो को बौने ग्रह का दर्जा दिए जाने से जुड़ा है?",["Uranus","Neptune","Saturn","Mars"],["अरुण","वरुण","शनि","मंगल"],1,"Neptune (Varun) is the coldest planet; in 2006 Pluto was demoted to dwarf planet status.","वरुण सबसे ठंडा ग्रह है।"],
+["National Parks","mcq","Which National Park-State pair is correctly matched?","निम्नलिखित में से कौन सा राष्ट्रीय उद्यान-राज्य युग्म सही सुमेलित है?",["Namdapha National Park - Nagaland","Simlipal National Park - Odisha","Bandipur National Park - Andhra Pradesh","Vansda National Park - Rajasthan"],["नमदाफा राष्ट्रीय उद्यान - नागालैंड","सिमिलिपाल राष्ट्रीय उद्यान - ओडिशा","बांदीपुर राष्ट्रीय उद्यान - आंध्र प्रदेश","वांसदा राष्ट्रीय उद्यान - राजस्थान"],1,"Simlipal National Park is correctly located in Odisha.","सिमिलिपाल राष्ट्रीय उद्यान सही रूप से ओडिशा में स्थित है।"],
+["National Parks","mcq","Bannerghatta, Bandipur, and Nagarhole National Parks are located in which state?","बन्नेरघट्टा, बांदीपुर और नागरहोल राष्ट्रीय उद्यान किस राज्य में स्थित हैं?",["Karnataka","Tamil Nadu","Kerala","Andhra Pradesh"],["कर्नाटक","तमिलनाडु","केरल","आंध्र प्रदेश"],0,"All three national parks are located in Karnataka.","तीनों राष्ट्रीय उद्यान कर्नाटक में स्थित हैं।"],
+["National Parks","mcq","Namdapha National Park is located in which state?","नामदफा राष्ट्रीय उद्यान किस राज्य में स्थित है?",["Arunachal Pradesh","Nagaland","Assam","Manipur"],["अरुणाचल प्रदेश","नागालैंड","असम","मणिपुर"],0,"Namdapha National Park is located in Arunachal Pradesh.","नामदफा राष्ट्रीय उद्यान अरुणाचल प्रदेश में स्थित है।"],
+["National Parks","mcq","Vansda National Park is located in which state?","वांसदा राष्ट्रीय उद्यान किस राज्य में स्थित है?",["Gujarat","Rajasthan","Maharashtra","Madhya Pradesh"],["गुजरात","राजस्थान","महाराष्ट्र","मध्य प्रदेश"],0,"Vansda National Park is located in Gujarat.","वांसदा राष्ट्रीय उद्यान गुजरात में स्थित है।"]
+];
+
+/* ---------- STATE ---------- */
+let lang = "en";
+let cur = 0, score = 0, answers = new Array(Q.length).fill(null);
+
+const T = {
+  en:{title:"भूगोल PYQ Series — Geography Test", sub:"100 questions · PARMAR SSC GK PYQ Series 6",
+      startP:"This offline test covers atmosphere, rivers, dams, landforms, oceans, climate, minerals and more — drawn from the PYQ Series 6 notes. Pick your language above, then begin.",
+      lblQ:"Questions", lblS:"Statement-based", lblL:"Languages", start:"Start Test",
+      q:"Question", score:"Score", next:"Next →", finish:"Finish", end:"End Test",
+      finalOf:"correct", retake:"Retake Test", review:"Review Answers", hideReview:"Hide Review",
+      yourAns:"Your answer", correctAns:"Correct answer", foot:"Works fully offline — no internet connection needed.",
+      right:"Correct", miss:"Incorrect"},
+  hi:{title:"भूगोल PYQ Series — भूगोल टेस्ट", sub:"100 प्रश्न · PARMAR SSC GK PYQ Series 6",
+      startP:"यह ऑफलाइन टेस्ट वायुमंडल, नदियाँ, बांध, भू-आकृतियाँ, महासागर, जलवायु, खनिज आदि को कवर करता है — PYQ Series 6 नोट्स से लिया गया है। ऊपर अपनी भाषा चुनें, फिर शुरू करें।",
+      lblQ:"प्रश्न", lblS:"कथन आधारित", lblL:"भाषाएं", start:"टेस्ट शुरू करें",
+      q:"प्रश्न", score:"स्कोर", next:"अगला →", finish:"समाप्त करें", end:"टेस्ट समाप्त करें",
+      finalOf:"सही", retake:"पुनः टेस्ट दें", review:"उत्तर देखें", hideReview:"उत्तर छिपाएं",
+      yourAns:"आपका उत्तर", correctAns:"सही उत्तर", foot:"पूरी तरह ऑफलाइन काम करता है — इंटरनेट की आवश्यकता नहीं।",
+      right:"सही", miss:"गलत"}
+};
+
+const el = id => document.getElementById(id);
+
+function applyLangStrings(){
+  const t = T[lang];
+  el("mastTitle").textContent = t.title;
+  el("mastSub").textContent = t.sub;
+  el("startP").textContent = t.startP;
+  el("lblQ").textContent = t.lblQ;
+  el("lblS").textContent = t.lblS;
+  el("lblL").textContent = t.lblL;
+  el("startBtn").textContent = t.start;
+  el("quitBtn").textContent = t.end;
+  el("retakeBtn").textContent = t.retake;
+  el("reviewBtn").textContent = t.review;
+  el("foot").textContent = t.foot;
+  document.documentElement.lang = lang;
+  updateProgress();
+}
+
+el("langToggle").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  lang = b.dataset.lang;
+  document.querySelectorAll("#langToggle button").forEach(x=>x.classList.toggle("active", x===b));
+  applyLangStrings();
+  if(!el("quizScreen").classList.contains("hidden")) renderQuestion();
+  if(!el("resultScreen").classList.contains("hidden")) renderResult();
+});
+document.querySelector('#langToggle button[data-lang="en"]').classList.add("active");
+
+function updateProgress(){
+  const t = T[lang];
+  el("progLabel").textContent = `${t.q} ${cur+1} / ${Q.length}`;
+  el("scoreLive").textContent = `${t.score}: ${score}`;
+  el("progFill").style.width = ((cur+1)/Q.length*100)+"%";
+}
+
+function renderQuestion(){
+  const item = Q[cur];
+  const [cat, type, qEn, qHi, oEn, oHi, ans, exEn, exHi] = item;
+  updateProgress();
+  el("qCat").textContent = cat;
+  el("qText").textContent = lang==="en" ? qEn : qHi;
+  const opts = lang==="en" ? oEn : oHi;
+  const list = el("optList"); list.innerHTML = "";
+  const letters = ["A","B","C","D"];
+  const chosen = answers[cur];
+  opts.forEach((opt,i)=>{
+    const row = document.createElement("div");
+    row.className = "opt" + (chosen!==null ? " disabled":"");
+    row.innerHTML = `<span class="mk">${letters[i]}</span><span>${opt}</span>`;
+    if(chosen!==null){
+      if(i===ans) row.classList.add("correct");
+      else if(i===chosen && chosen!==ans) row.classList.add("wrong");
+    }
+    row.addEventListener("click", ()=>{
+      if(answers[cur]!==null) return;
+      answers[cur]=i;
+      if(i===ans) score++;
+      renderQuestion();
+      const ex = el("explainBox");
+      ex.innerHTML = `<b>${lang==="en"?"Explanation:":"स्पष्टीकरण:"}</b> ${lang==="en"?exEn:exHi}`;
+      ex.classList.add("show");
+      el("nextBtn").disabled=false;
+    });
+    list.appendChild(row);
+  });
+  if(chosen!==null){
+    const ex = el("explainBox");
+    ex.innerHTML = `<b>${lang==="en"?"Explanation:":"स्पष्टीकरण:"}</b> ${lang==="en"?exEn:exHi}`;
+    ex.classList.add("show");
+    el("nextBtn").disabled=false;
+  } else {
+    el("explainBox").classList.remove("show");
+    el("nextBtn").disabled=true;
+  }
+  el("nextBtn").textContent = (cur===Q.length-1) ? T[lang].finish : T[lang].next;
+}
+
+el("startBtn").addEventListener("click", ()=>{
+  el("startScreen").classList.add("hidden");
+  el("quizScreen").classList.remove("hidden");
+  renderQuestion();
+});
+
+el("nextBtn").addEventListener("click", ()=>{
+  if(cur < Q.length-1){ cur++; renderQuestion(); }
+  else { showResult(); }
+});
+
+el("quitBtn").addEventListener("click", showResult);
+
+function showResult(){
+  el("quizScreen").classList.add("hidden");
+  el("resultScreen").classList.remove("hidden");
+  renderResult();
+}
+
+function renderResult(){
+  const answered = answers.filter(a=>a!==null).length;
+  el("finalScore").textContent = `${score} / ${Q.length}`;
+  const pct = answered ? Math.round(score/answered*100) : 0;
+  el("finalPct").textContent = `${pct}% ${T[lang].finalOf} (${answered}/${Q.length} attempted)`;
+  el("reviewBtn").textContent = T[lang].review;
+  buildReviewList();
+}
+
+function buildReviewList(){
+  const list = el("reviewList");
+  list.innerHTML = "";
+  Q.forEach((item,idx)=>{
+    const [cat, type, qEn, qHi, oEn, oHi, ans, exEn, exHi] = item;
+    const opts = lang==="en" ? oEn : oHi;
+    const chosen = answers[idx];
+    const div = document.createElement("div");
+    div.className = "reviewitem";
+    const isRight = chosen===ans;
+    const badge = chosen===null ? "" : (isRight ? `<span class="badge right">${T[lang].right}</span>` : `<span class="badge miss">${T[lang].miss}</span>`);
+    let optsHtml = "";
+    opts.forEach((opt,i)=>{
+      let cls = "";
+      if(i===ans) cls="correct";
+      else if(i===chosen) cls="wrongpick";
+      optsHtml += `<div class="rowopt ${cls}">${opt}</div>`;
+    });
+    div.innerHTML = `<div class="qn">Q${idx+1}. ${lang==="en"?qEn:qHi}${badge}</div>${optsHtml}<div class="explain show" style="margin-top:10px;"><b>${lang==="en"?"Explanation:":"स्पष्टीकरण:"}</b> ${lang==="en"?exEn:exHi}</div>`;
+    list.appendChild(div);
+  });
+}
+
+el("reviewBtn").addEventListener("click", ()=>{
+  const list = el("reviewList");
+  const showing = !list.classList.contains("hidden");
+  list.classList.toggle("hidden");
+  el("reviewBtn").textContent = showing ? T[lang].review : T[lang].hideReview;
+});
+
+el("retakeBtn").addEventListener("click", ()=>{
+  cur=0; score=0; answers = new Array(Q.length).fill(null);
+  el("resultScreen").classList.add("hidden");
+  el("reviewList").classList.add("hidden");
+  el("startScreen").classList.remove("hidden");
+});
+
+applyLangStrings();
+</script>
+</body>
+</html>
